@@ -1,0 +1,9 @@
+CMake Error at C:/Users/oabde/AppData/Local/Android/Sdk/cmake/3.22.1/share/cmake-3.22/Modules/CMakeDetermineSystem.cmake:130 (message):
+  Could not find toolchain file:
+  C:\Users\oabde\AppData\Local\Android\Sdk\ndk\27.0.12077973\build\cmake\android.toolchain.cmake
+Call Stack (most recent call first):
+  CMakeLists.txt
+
+
+CMake Error: CMAKE_C_COMPILER not set, after EnableLanguage
+CMake Error: CMAKE_CXX_COMPILER not set, after EnableLanguage

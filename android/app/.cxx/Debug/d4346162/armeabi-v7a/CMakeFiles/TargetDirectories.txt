@@ -1,0 +1,2 @@
+D:/DocReader/sba7ie/android/app/.cxx/Debug/d4346162/armeabi-v7a/CMakeFiles/edit_cache.dir
+D:/DocReader/sba7ie/android/app/.cxx/Debug/d4346162/armeabi-v7a/CMakeFiles/rebuild_cache.dir
