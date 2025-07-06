@@ -55,10 +55,10 @@ class UpdateTeacherScreen extends StatelessWidget {
               const SizedBox(height: 20),
               ElevatedButton(
                 onPressed: () async {
-                  if (updateTeacherController.formKey.currentState!
-                      .validate()) {
-                    await updateTeacherController.updateTeacher();
-                  }
+                  // if (updateTeacherController.formKey.currentState!
+                  //     .validate()) {
+                  //   await updateTeacherController.updateTeacher();
+                  // }
                 },
                 child: Text('تعديل', style: TextManagement.cairoS05W500White),
               ),

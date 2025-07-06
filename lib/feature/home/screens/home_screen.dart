@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:tasneem_sba7ie/screens/students/students_screen.dart';
-import 'package:tasneem_sba7ie/screens/subscription/subscription_screen.dart';
-import 'package:tasneem_sba7ie/screens/teachers/teachers_screen.dart';
-import 'package:tasneem_sba7ie/utl/color_management.dart';
-import 'package:tasneem_sba7ie/utl/text_management.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
+import 'package:tasneem_sba7ie/core/router/router.dart';
+import 'package:tasneem_sba7ie/core/theme/color_management.dart';
+import 'package:tasneem_sba7ie/core/theme/text_management.dart';
 import 'package:tasneem_sba7ie/feature/home/screens/widgets/box_contain_image_and_texts.dart';
 import 'package:tasneem_sba7ie/feature/home/screens/widgets/categories_list.dart';
 
@@ -15,62 +13,60 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: ColorManagement.lightGrey,
       appBar: AppBar(
-        backgroundColor: ColorManagement.deepPurple,
-        toolbarHeight: 0.12.sh,
+        backgroundColor: ColorManagement.primaryPurple,
+        elevation: 6,
+        shadowColor: ColorManagement.shadowColor,
         centerTitle: false,
-        titleTextStyle:
-            TextManagement.cairoS06WBoldWhite.copyWith(color: Colors.white),
-        title: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text(
-              "حضانة تسنيم الخاصة",
-            ),
-            Text(
-              "ازيك يا أباعمر 👋",
-              style: TextManagement.cairoS05W500White,
-            ),
-          ],
+        title: Text(
+          "حضانة تسنيم الخاصة",
+          style: TextManagement.cairoSemiBold.copyWith(
+            color: ColorManagement.white,
+            fontSize: 26.sp,
+          ),
         ),
       ),
       body: SingleChildScrollView(
+        physics: const BouncingScrollPhysics(),
         child: Column(
           children: [
+            SizedBox(height: 20.h),
             const BoxContainImageAndTexts(),
-            SizedBox(height: 0.02.sh),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                CategoriesList(
-                  onTap: () {
-                    Get.to(() => const TeachersScreen());
-                  },
-                  icon: Icons.person,
-                  text: "المعلمون",
-                ),
-                CategoriesList(
-                  onTap: () {
-                    Get.to(() => const StudentScreen());
-                  },
-                  icon: Icons.child_care,
-                  text: "الطلاب",
-                ),
-              ],
+            SizedBox(height: 24.h),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 16.w),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  CategoriesList(
+                    onTap: () => context.pushNamed(Routers.teachers),
+                    icon: Icons.person,
+                    text: "المعلمون",
+                  ),
+                  CategoriesList(
+                    onTap: () => context.pushNamed(Routers.students),
+                    icon: Icons.child_care,
+                    text: "الطلاب",
+                  ),
+                ],
+              ),
             ),
-            SizedBox(height: 0.02.sh),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                CategoriesList(
-                  onTap: () {
-                    Get.to(() => const SubscriptionScreen());
-                  },
-                  icon: Icons.monetization_on,
-                  text: "الاشتراكات",
-                ),
-              ],
+            SizedBox(height: 24.h),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 16.w),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  CategoriesList(
+                    onTap: () => context.pushNamed(Routers.subscription),
+                    icon: Icons.monetization_on,
+                    text: "الاشتراكات",
+                  ),
+                ],
+              ),
             ),
+            SizedBox(height: 32.h),
           ],
         ),
       ),

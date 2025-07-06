@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:tasneem_sba7ie/core/get_it/get_it.dart';
 import 'package:tasneem_sba7ie/core/router/app_router.dart';
 import 'package:tasneem_sba7ie/services/data_service.dart';
 import 'package:tasneem_sba7ie/utl/color_management.dart';
@@ -8,7 +9,10 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await initServices();
+  // Initialize ScreenUtil
+  await ScreenUtil.ensureScreenSize();
+  getItSetup();
+  // await initServices();
   runApp(const MyApp());
 }
 

@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
 import 'package:tasneem_sba7ie/models/student_model.dart';
-import 'package:tasneem_sba7ie/models/teacher_model.dart';
+import 'package:tasneem_sba7ie/feature/teachers/data/models/teacher_model.dart';
 import 'package:tasneem_sba7ie/repository/student_repo.dart';
 import 'package:tasneem_sba7ie/screens/students/add_student_screen.dart';
 import 'package:tasneem_sba7ie/screens/students/update_student_screen.dart';

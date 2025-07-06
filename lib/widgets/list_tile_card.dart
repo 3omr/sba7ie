@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:tasneem_sba7ie/utl/color_management.dart';
-import 'package:tasneem_sba7ie/utl/text_management.dart';
-import '../utl/contant.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:tasneem_sba7ie/core/theme/color_management.dart';
+import 'package:tasneem_sba7ie/core/theme/text_management.dart';
 
 class ListTileCard extends StatelessWidget {
   final int number;
@@ -20,30 +20,30 @@ class ListTileCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.symmetric(
-          vertical: Utl.heightScreen * 0.005,
-          horizontal: Utl.widthScreen * 0.02),
+      margin: EdgeInsets.symmetric(vertical: 0.005.sh, horizontal: 0.02.sw),
       decoration: BoxDecoration(
-          border: Border.all(color: ColorManagement.deepPurple),
-          borderRadius: BorderRadius.all(Radius.circular(7))),
+          border: Border.all(color: ColorManagement.primaryPurple),
+          borderRadius: BorderRadius.all(Radius.circular(7.r))),
       child: ListTile(
         leading: CircleAvatar(
-          backgroundColor: ColorManagement.deepPurple,
+          backgroundColor: ColorManagement.secondaryBlue,
           child: Text(
-            "${number}",
-            style: TextManagement.cairoS05W500White,
+            "$number",
+            style: TextManagement.cairoSemiBold
+                .copyWith(color: ColorManagement.white, fontSize: 0.025.sh),
           ),
         ),
         title: Text(
           title,
-          style: TextManagement.cairoS06WBoldWhite.copyWith(
-              color: ColorManagement.deepBlue,
-              fontSize: Utl.widthScreen * 0.045),
+          style: TextManagement.cairoSemiBold.copyWith(
+            color: ColorManagement.secondaryBlue,
+          ),
         ),
         subtitle: Text(
           subTitle,
-          style: TextManagement.cairoS05W500White.copyWith(
-              color: ColorManagement.grey, fontSize: Utl.widthScreen * 0.025),
+          style: TextManagement.cairoRegular.copyWith(
+            color: ColorManagement.darkText,
+          ),
         ),
         trailing: Row(
           mainAxisSize: MainAxisSize.min,
@@ -51,14 +51,14 @@ class ListTileCard extends StatelessWidget {
             IconButton(
               icon: Icon(
                 Icons.edit,
-                color: ColorManagement.deepPurple,
+                color: ColorManagement.primaryPurple,
               ),
               onPressed: onEdite,
             ),
             IconButton(
                 icon: Icon(
                   Icons.delete,
-                  color: ColorManagement.deepPurple,
+                  color: ColorManagement.primaryPurple,
                 ),
                 onPressed: onDelete),
           ],
