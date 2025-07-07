@@ -6,7 +6,7 @@ GetIt getIt = GetIt.instance;
 void getItSetup() {
   // Registering the TeacherRepo as a singleton
   getIt.registerLazySingleton<TeacherRepo>(() => TeacherRepo());
-  getIt.registerLazySingleton<TeacherCubit>(
+  getIt.registerFactory<TeacherCubit>(
     () => TeacherCubit(getIt<TeacherRepo>()),
   );
 }

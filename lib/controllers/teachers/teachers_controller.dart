@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
 import 'package:tasneem_sba7ie/feature/teachers/data/repos/teacher_repo.dart';
-import 'package:tasneem_sba7ie/screens/teachers/update_teacher_screen.dart';
+import 'package:tasneem_sba7ie/feature/teachers/screens/update_teacher_screen.dart';
 import 'package:tasneem_sba7ie/services/data_service.dart';
 import 'package:tasneem_sba7ie/feature/teachers/screens/add_teacher_screen.dart';
 import 'package:tasneem_sba7ie/utl/contant.dart';
@@ -36,7 +36,7 @@ class TeachersController extends GetxController {
   }
 
   updateTeacher(Teacher teacher) {
-    Get.to(() => const UpdateTeacherScreen(), arguments: teacher);
+    // Get.to(() => const UpdateTeacherScreen(), arguments: teacher);
   }
 
   deleteTeacher(int teacherId) {

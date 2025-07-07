@@ -29,27 +29,28 @@ class TeacherCubit extends Cubit<TeacherState> {
     emit(TeacherLoading());
     try {
       await _teacherRepo.addTeacher(teacher);
-      teachers.add(teacher);
+      getTeachers(); // Refresh the list after adding
       emit(TeacherAdded());
     } catch (e) {
       emit(TeacherError(e.toString()));
     }
   }
 
-  updateTeacher(Teacher oldTeacherData, Teacher newTeacherData) async {
+  updateTeacher(
+      {required Teacher oldTeacherData,
+      required Teacher newTeacherData}) async {
     emit(TeacherLoading());
     try {
       await _teacherRepo.updateTeacher(oldTeacherData, newTeacherData);
       int index = teachers.indexOf(oldTeacherData);
       teachers[index] = newTeacherData;
-      emit(TeacherLoaded(teachers));
+      emit(TeacherAdded());
     } catch (e) {
       emit(TeacherError(e.toString()));
     }
   }
 
   deleteTeacher(Teacher teacher) async {
-    emit(TeacherLoading());
     try {
       await _teacherRepo.deleteTeacher(teacher.id!);
       teachers.remove(teacher);

@@ -7,14 +7,15 @@ import 'package:tasneem_sba7ie/core/theme/text_management.dart';
 import 'package:tasneem_sba7ie/feature/teachers/data/models/teacher_model.dart';
 import 'package:tasneem_sba7ie/feature/teachers/logic/teacher_cubit.dart';
 
-class AddTeacherScreen extends StatefulWidget {
-  const AddTeacherScreen({super.key});
+class UpdateTeacherScreen extends StatefulWidget {
+  final Teacher teacher;
+  const UpdateTeacherScreen({super.key, required this.teacher});
 
   @override
-  State<AddTeacherScreen> createState() => _AddTeacherScreenState();
+  State<UpdateTeacherScreen> createState() => _UpdateTeacherScreenState();
 }
 
-class _AddTeacherScreenState extends State<AddTeacherScreen> {
+class _UpdateTeacherScreenState extends State<UpdateTeacherScreen> {
   late final GlobalKey<FormState> formKey;
   late final TextEditingController nameController;
   late final TextEditingController salaryController;
@@ -23,8 +24,9 @@ class _AddTeacherScreenState extends State<AddTeacherScreen> {
   void initState() {
     super.initState();
     formKey = GlobalKey<FormState>();
-    nameController = TextEditingController();
-    salaryController = TextEditingController();
+    nameController = TextEditingController(text: widget.teacher.name);
+    salaryController =
+        TextEditingController(text: widget.teacher.salary.toString());
   }
 
   @override
@@ -40,10 +42,9 @@ class _AddTeacherScreenState extends State<AddTeacherScreen> {
       backgroundColor: ColorManagement.lightGrey,
       appBar: AppBar(
         title: Text(
-          'إضافة معلم جديد',
+          'تعديل معلم',
           style: TextManagement.alexandria24BoldBlack,
         ),
-        shadowColor: ColorManagement.darkGrey.withOpacity(0.3),
         centerTitle: true,
       ),
       body: Container(
@@ -84,7 +85,7 @@ class _AddTeacherScreenState extends State<AddTeacherScreen> {
                       controller: nameController,
                       decoration: InputDecoration(
                         hintText: 'الاسم',
-                        hintStyle: TextManagement.alexandria16RegularDarkGrey,
+                        hintStyle: TextManagement.alexandria16RegularLightGrey,
                         prefixIcon: const Icon(
                           Icons.person,
                           color: ColorManagement.mainBlue,
@@ -126,7 +127,7 @@ class _AddTeacherScreenState extends State<AddTeacherScreen> {
                       keyboardType: TextInputType.number,
                       decoration: InputDecoration(
                         hintText: 'المرتب',
-                        hintStyle: TextManagement.alexandria16RegularDarkGrey,
+                        hintStyle: TextManagement.alexandria16RegularLightGrey,
                         prefixIcon: const Icon(
                           Icons.monetization_on,
                           color: ColorManagement.mainBlue,
@@ -149,7 +150,6 @@ class _AddTeacherScreenState extends State<AddTeacherScreen> {
                         return null;
                       },
                       textInputAction: TextInputAction.done,
-                      // semanticsLabel: 'المرتب',
                     ),
                   ),
                   SizedBox(height: 32.h),
@@ -159,7 +159,7 @@ class _AddTeacherScreenState extends State<AddTeacherScreen> {
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
                             content: Text(
-                              'تم إضافة المعلم بنجاح',
+                              'تم تعديل المعلم بنجاح',
                               style: TextManagement.alexandria16RegularWhite,
                             ),
                             backgroundColor: ColorManagement.mainBlue,
@@ -186,13 +186,15 @@ class _AddTeacherScreenState extends State<AddTeacherScreen> {
                             ? null
                             : () {
                                 if (formKey.currentState!.validate()) {
-                                  final teacher = Teacher(
+                                  final updatedTeacher = Teacher(
+                                    id: widget.teacher.id,
                                     name: nameController.text,
                                     salary: int.parse(salaryController.text),
                                   );
-                                  context
-                                      .read<TeacherCubit>()
-                                      .addTeacher(teacher);
+                                  context.read<TeacherCubit>().updateTeacher(
+                                        oldTeacherData: widget.teacher,
+                                        newTeacherData: updatedTeacher,
+                                      );
                                 }
                               },
                         style: ElevatedButton.styleFrom(
@@ -218,7 +220,7 @@ class _AddTeacherScreenState extends State<AddTeacherScreen> {
                                 ),
                               )
                             : Text(
-                                'إضافة',
+                                'تعديل',
                                 style: TextManagement.alexandria16RegularWhite,
                               ),
                       );
