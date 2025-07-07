@@ -22,27 +22,25 @@ class ListTileCard extends StatelessWidget {
     return Container(
       margin: EdgeInsets.symmetric(vertical: 0.005.sh, horizontal: 0.02.sw),
       decoration: BoxDecoration(
-          border: Border.all(color: ColorManagement.primaryPurple),
+          border: Border.all(color: ColorManagement.mainBlue),
           borderRadius: BorderRadius.all(Radius.circular(7.r))),
       child: ListTile(
         leading: CircleAvatar(
-          backgroundColor: ColorManagement.secondaryBlue,
+          backgroundColor: ColorManagement.mainBlue,
           child: Text(
             "$number",
-            style: TextManagement.cairoSemiBold
+            style: TextManagement.alexandria16RegularBlack
                 .copyWith(color: ColorManagement.white, fontSize: 0.025.sh),
           ),
         ),
         title: Text(
           title,
-          style: TextManagement.cairoSemiBold.copyWith(
-            color: ColorManagement.secondaryBlue,
-          ),
+          style: TextManagement.alexandria16RegularBlack.copyWith(),
         ),
         subtitle: Text(
           subTitle,
-          style: TextManagement.cairoRegular.copyWith(
-            color: ColorManagement.darkText,
+          style: TextManagement.alexandria16RegularBlack.copyWith(
+            color: ColorManagement.darkGrey,
           ),
         ),
         trailing: Row(
@@ -51,14 +49,14 @@ class ListTileCard extends StatelessWidget {
             IconButton(
               icon: Icon(
                 Icons.edit,
-                color: ColorManagement.primaryPurple,
+                color: ColorManagement.mainBlue,
               ),
               onPressed: onEdite,
             ),
             IconButton(
                 icon: Icon(
                   Icons.delete,
-                  color: ColorManagement.primaryPurple,
+                  color: ColorManagement.mainBlue,
                 ),
                 onPressed: onDelete),
           ],

@@ -3,8 +3,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:tasneem_sba7ie/core/get_it/get_it.dart';
 import 'package:tasneem_sba7ie/core/router/app_router.dart';
+import 'package:tasneem_sba7ie/core/theme/theme_management.dart';
 import 'package:tasneem_sba7ie/services/data_service.dart';
-import 'package:tasneem_sba7ie/utl/color_management.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
 Future<void> main() async {
@@ -32,18 +32,7 @@ class MyApp extends StatelessWidget {
       builder: (context, child) {
         return MaterialApp.router(
           title: 'Tasneem Sba7ie',
-          theme: ThemeData(
-              colorScheme:
-                  ColorScheme.light(onPrimary: ColorManagement.deepPurple),
-              scaffoldBackgroundColor: Colors.white,
-              appBarTheme: const AppBarTheme(
-                elevation: 0,
-                backgroundColor: Colors.white,
-                foregroundColor: Colors.black,
-                centerTitle: true,
-                // titleTextStyle:
-                //     TextManagement.cairoS06WBoldWhite.copyWith(color: Colors.black),
-              )),
+          theme: ThemeManagement.lightTheme,
           debugShowCheckedModeBanner: false,
           routerConfig: AppRouter.router,
           // Localizations for Arabic and English

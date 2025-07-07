@@ -29,7 +29,7 @@ class CategoriesList extends StatelessWidget {
           borderRadius: BorderRadius.circular(16.r),
           boxShadow: [
             BoxShadow(
-              color: ColorManagement.shadowColor,
+              color: ColorManagement.darkGrey,
               blurRadius: 10.r,
               offset: const Offset(0, 4),
             ),
@@ -49,8 +49,8 @@ class CategoriesList extends StatelessWidget {
               decoration: BoxDecoration(
                 gradient: const LinearGradient(
                   colors: [
-                    ColorManagement.primaryPurple,
-                    ColorManagement.secondaryBlue,
+                    ColorManagement.mainBlue,
+                    ColorManagement.lightGrey,
                   ],
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
@@ -67,8 +67,8 @@ class CategoriesList extends StatelessWidget {
             ),
             Text(
               text,
-              style: TextManagement.cairoSemiBold.copyWith(
-                color: ColorManagement.darkText,
+              style: TextManagement.alexandria16RegularBlack.copyWith(
+                color: ColorManagement.darkGrey,
                 fontSize: 18.sp,
                 fontWeight: FontWeight.w600,
               ),

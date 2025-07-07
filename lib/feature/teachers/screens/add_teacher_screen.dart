@@ -109,7 +109,7 @@ class _AddTeacherScreenState extends State<AddTeacherScreen> {
                     ),
                     child: Text(
                       'إضافة',
-                      style: TextManagement.cairoSemiBold.copyWith(
+                      style: TextManagement.alexandria16RegularBlack.copyWith(
                         color: Colors.white,
                         fontSize: 18,
                       ),
