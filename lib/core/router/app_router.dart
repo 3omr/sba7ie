@@ -6,9 +6,8 @@ import 'package:tasneem_sba7ie/core/router/router.dart';
 import 'package:tasneem_sba7ie/feature/home/screens/home_screen.dart';
 import 'package:tasneem_sba7ie/feature/teachers/data/models/teacher_model.dart';
 import 'package:tasneem_sba7ie/feature/teachers/logic/teacher_cubit.dart';
+import 'package:tasneem_sba7ie/feature/teachers/screens/add_update_teacher_screen.dart';
 import 'package:tasneem_sba7ie/feature/teachers/screens/teachers_screen.dart';
-import 'package:tasneem_sba7ie/feature/teachers/screens/add_teacher_screen.dart';
-import 'package:tasneem_sba7ie/feature/teachers/screens/update_teacher_screen.dart';
 
 class AppRouter {
   static final GoRouter router = GoRouter(
@@ -36,7 +35,7 @@ class AppRouter {
         builder: (BuildContext context, GoRouterState state) {
           return BlocProvider.value(
             value: state.extra as TeacherCubit,
-            child: const AddTeacherScreen(),
+            child: const AddUpdateTeacherScreen(),
           );
         },
       ),
@@ -47,7 +46,7 @@ class AppRouter {
           List extra = state.extra as List;
           return BlocProvider.value(
             value: extra[0] as TeacherCubit,
-            child: UpdateTeacherScreen(
+            child: AddUpdateTeacherScreen(
               teacher: extra[1] as Teacher,
             ),
           );

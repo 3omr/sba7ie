@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:tasneem_sba7ie/controllers/students/students_controller.dart';
-import 'package:tasneem_sba7ie/models/student_model.dart';
+import 'package:tasneem_sba7ie/feature/students/data/models/student_model.dart';
 
 import '../screens/subscription/student_subscription_screen.dart';
 import '../widgets/list_tile_card.dart';

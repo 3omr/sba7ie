@@ -1,7 +1,7 @@
-import 'package:tasneem_sba7ie/models/student_model.dart';
+import 'package:tasneem_sba7ie/feature/students/data/models/student_model.dart';
 import 'package:tasneem_sba7ie/sql_database/tabels_name.dart';
 
-import '../sql_database/db.dart';
+import '../../../../sql_database/db.dart';
 
 class StudentRepo {
   Db db = Db();
@@ -18,10 +18,9 @@ class StudentRepo {
     return resp;
   }
 
-  updateStudent(
-      Student oldStudentData, Map<String, Object?> newStudentData) async {
+  updateStudent(Student oldStudentData, Student newStudentData) async {
     int resp = await db.updateData(
-        studentsTable, newStudentData, "id = ${oldStudentData.id}");
+        studentsTable, newStudentData.toJson(), "id = ${oldStudentData.id}");
     return resp;
   }
 

@@ -19,7 +19,7 @@ class TeacherCubit extends Cubit<TeacherState> {
     emit(TeacherLoading());
     try {
       teachers = await _teacherRepo.getTeachers();
-      emit(TeacherLoaded(teachers));
+      teachers.isEmpty ? emit(EmptyTeachers()) : emit(TeacherLoaded(teachers));
     } catch (e) {
       emit(TeacherError(e.toString()));
     }
@@ -54,6 +54,7 @@ class TeacherCubit extends Cubit<TeacherState> {
     try {
       await _teacherRepo.deleteTeacher(teacher.id!);
       teachers.remove(teacher);
+      getTeachers(); // Refresh the list after deleting
       emit(TeacherLoaded(teachers));
     } catch (e) {
       emit(TeacherError(e.toString()));

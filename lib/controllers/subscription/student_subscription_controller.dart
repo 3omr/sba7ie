@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:tasneem_sba7ie/models/student_model.dart';
+import 'package:tasneem_sba7ie/feature/students/data/models/student_model.dart';
 import 'package:tasneem_sba7ie/models/subscription_model.dart';
 import 'package:tasneem_sba7ie/repository/subscription_repo.dart';
 import 'package:tasneem_sba7ie/services/data_service.dart';

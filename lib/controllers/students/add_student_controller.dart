@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:tasneem_sba7ie/controllers/students/students_controller.dart';
-import 'package:tasneem_sba7ie/models/student_model.dart';
-import 'package:tasneem_sba7ie/repository/student_repo.dart';
+import 'package:tasneem_sba7ie/feature/students/data/models/student_model.dart';
+import 'package:tasneem_sba7ie/feature/students/data/repos/student_repo.dart';
 import 'package:tasneem_sba7ie/services/data_service.dart';
 
 class AddStudentController extends GetxController {

@@ -18,5 +18,6 @@ class TeacherError extends TeacherState {
   TeacherError(this.message);
 }
 
-class TeacherAdded extends TeacherState {}
+class EmptyTeachers extends TeacherState {}
 
+class TeacherAdded extends TeacherState {}
