@@ -4,7 +4,6 @@ import 'package:tasneem_sba7ie/models/subscription_model.dart';
 import 'package:tasneem_sba7ie/feature/teachers/data/models/teacher_model.dart';
 import 'package:tasneem_sba7ie/feature/students/data/repos/student_repo.dart';
 import 'package:tasneem_sba7ie/repository/subscription_repo.dart';
-import 'package:tasneem_sba7ie/feature/teachers/data/repos/teacher_repo.dart';
 import 'package:tasneem_sba7ie/sql_database/db.dart';
 
 class DataService extends GetxService {
@@ -13,17 +12,17 @@ class DataService extends GetxService {
   List<Student> studentsList = [];
   List<Subscription> subscriptionsList = [];
 
-  TeacherRepo teacherRepo = TeacherRepo();
+  // TeacherRepo teacherRepo = TeacherRepo();
   StudentRepo studentRepo = StudentRepo();
   SubscriptionRepo subscriptionRepo = SubscriptionRepo();
 
   Db database = Db();
 
-  getTeacherData() async {
-    teachersList = [];
-    List<Teacher> res = await teacherRepo.getTeachers();
-    teachersList.addAll(res);
-  }
+  // getTeacherData() async {
+  //   teachersList = [];
+  //   List<Teacher> res = await teacherRepo.getTeachers();
+  //   teachersList.addAll(res);
+  // }
 
   getStudentData() async {
     studentsList = [];
@@ -38,7 +37,7 @@ class DataService extends GetxService {
   }
 
   void getData() async {
-    await getTeacherData();
+    // await getTeacherData();
     await getStudentData();
     await getSubscription();
   }

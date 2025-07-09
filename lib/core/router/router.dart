@@ -7,8 +7,8 @@ class Routers {
   static const String updateTeacher = '/updateTeacher';
   static const String teachers = "/teachers";
   static const String addUpdateTeacher = "/addUpdateTeacher";
+  static const String teacherDetails = "/teacherDetails";
   // students
   static const String students = "/students";
   static const String subscription = "/subscription";
-  
 }
