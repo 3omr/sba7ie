@@ -38,7 +38,7 @@ class _AddUpdateTeacherScreenState extends State<AddUpdateTeacherScreen> {
     // Check if a teacher object was passed, indicating update mode
     if (widget.teacher != null) {
       _isUpdating = true;
-      nameController.text = widget.teacher!.name;
+      nameController.text = widget.teacher!.name ?? '';
       salaryController.text = widget.teacher!.salary.toString();
     }
   }
@@ -158,19 +158,7 @@ class _AddUpdateTeacherScreenState extends State<AddUpdateTeacherScreen> {
                       return ElevatedButton(
                         onPressed:
                             state is TeacherLoading ? null : _saveTeacher,
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: ColorManagement.mainBlue,
-                          padding: EdgeInsets.symmetric(
-                            horizontal: 32.w,
-                            vertical: 16.h,
-                          ),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12.r),
-                          ),
-                          elevation: 4,
-                          shadowColor:
-                              ColorManagement.darkGrey.withOpacity(0.3),
-                        ),
+   
                         child: state is TeacherLoading
                             ? const SizedBox(
                                 width: 24,

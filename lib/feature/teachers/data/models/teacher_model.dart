@@ -1,14 +1,14 @@
 class Teacher {
   int? id;
-  String name;
-  int salary;
-  int daysAbsent;
-  int lateDays;
+  String? name;
+  int? salary;
+  int? daysAbsent;
+  int? lateDays;
 
   Teacher({
     this.id,
-    required this.name,
-    required this.salary,
+    this.name,
+    this.salary,
     this.daysAbsent = 0,
     this.lateDays = 0,
   });
@@ -23,6 +23,12 @@ class Teacher {
     );
   }
 
+  factory Teacher.absenceFromJson(Map<dynamic, dynamic> json) {
+    return Teacher(
+      daysAbsent: (json["daysAbsent"] ?? 0) as int,
+      lateDays: (json["lateDays"] ?? 0) as int,
+    );
+  }
   Map<String, Object?> toJson() {
     return {
       "name": name,

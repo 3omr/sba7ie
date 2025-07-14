@@ -3,7 +3,8 @@ import 'package:tasneem_sba7ie/core/theme/color_management.dart';
 import 'package:tasneem_sba7ie/core/theme/text_management.dart';
 
 class AppSnackBars {
-  static void showSuccessSnackBar({required BuildContext context,required String successMsg}) {
+  static void showSuccessSnackBar(
+      {required BuildContext context, required String successMsg}) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(
@@ -16,7 +17,8 @@ class AppSnackBars {
     );
   }
 
-  static void showErrorSnackBar({required BuildContext context,required String errorMsg}) {
+  static void showErrorSnackBar(
+      {required BuildContext context, required String errorMsg}) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(

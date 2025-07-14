@@ -64,7 +64,7 @@ class TeacherCard extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        teacher.name,
+                        teacher.name ?? '',
                         style: TextManagement.alexandria18RegularBlack,
                         overflow: TextOverflow.ellipsis,
                         maxLines: 1,

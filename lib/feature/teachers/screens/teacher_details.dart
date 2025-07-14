@@ -1,130 +1,459 @@
+import 'package:date_picker_plus/date_picker_plus.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:intl/intl.dart';
+import 'package:tasneem_sba7ie/core/helper/date_helper.dart';
 import 'package:tasneem_sba7ie/core/theme/color_management.dart';
 import 'package:tasneem_sba7ie/core/theme/text_management.dart';
+import 'package:tasneem_sba7ie/core/widgets/app_snack_bars.dart';
 import 'package:tasneem_sba7ie/core/widgets/container_shadow.dart';
 import 'package:tasneem_sba7ie/core/widgets/horizontal_month_circles.dart';
 import 'package:tasneem_sba7ie/feature/teachers/data/models/teacher_model.dart';
+import 'package:tasneem_sba7ie/feature/teachers/logic/teacher_details_cubit.dart';
 
-class TeacherDetails extends StatelessWidget {
+class TeacherDetails extends StatefulWidget {
   final Teacher teacher;
   const TeacherDetails({super.key, required this.teacher});
+
+  @override
+  State<TeacherDetails> createState() => _TeacherDetailsState();
+}
+
+class _TeacherDetailsState extends State<TeacherDetails> {
+  late final TeacherManagementCubit teacherManagementCubit;
+
+  @override
+  initState() {
+    super.initState();
+    teacherManagementCubit = context.read<TeacherManagementCubit>();
+    teacherManagementCubit.getTeacherAbsenceAndLateDays(
+        widget.teacher.id!, DateHelper.getCurrentMonthAndYear());
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('بيانات المعلم'),
+        title: const Text(
+          'بيانات المعلم',
+        ),
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 0.04.sw, vertical: 0.04.sh),
+          padding: EdgeInsets.symmetric(horizontal: 0.05.sw, vertical: 0.03.sh),
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Row(children: [
-                CircleAvatar(
-                  radius: 0.1.sw,
-                  backgroundColor: ColorManagement.mainBlue.withOpacity(0.1),
-                  child: FaIcon(
-                    size: 0.12.sw,
-                    color: ColorManagement.mainBlue,
-                    FontAwesomeIcons.user,
+              // --- Teacher Profile Section ---
+              Container(
+                padding: EdgeInsets.all(0.04.sw),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(16.r),
+                  boxShadow: [
+                    BoxShadow(
+                      color: ColorManagement.mainBlue.withOpacity(0.1),
+                      blurRadius: 12,
+                      offset: const Offset(0, 4),
+                    ),
+                  ],
+                ),
+                child: Row(
+                  children: [
+                    CircleAvatar(
+                      radius: 0.12.sw,
+                      backgroundColor:
+                          ColorManagement.mainBlue.withOpacity(0.15),
+                      child: FaIcon(
+                        FontAwesomeIcons.user,
+                        size: 0.14.sw,
+                        color: ColorManagement.mainBlue,
+                      ),
+                    ),
+                    SizedBox(width: 0.06.sw),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            widget.teacher.name ?? '',
+                            style: TextManagement.alexandria20RegularBlack
+                                .copyWith(
+                              color: ColorManagement.mainBlue,
+                              fontWeight: FontWeight.w800,
+                            ),
+                            overflow: TextOverflow.ellipsis,
+                            semanticsLabel:
+                                'اسم المعلم: ${widget.teacher.name}',
+                          ),
+                          SizedBox(height: 0.01.sh),
+                          Text(
+                            "المرتب: ${widget.teacher.salary}",
+                            style: TextManagement.alexandria16RegularDarkGrey
+                                .copyWith(
+                              color: ColorManagement.darkGrey.withOpacity(0.8),
+                            ),
+                            semanticsLabel: 'المرتب: ${widget.teacher.salary}',
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(height: 0.03.sh),
+
+              // --- Monthly Navigation ---
+              Container(
+                padding: EdgeInsets.symmetric(
+                    horizontal: 0.04.sw, vertical: 0.02.sh),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(16.r),
+                  boxShadow: [
+                    BoxShadow(
+                      color: ColorManagement.mainBlue.withOpacity(0.1),
+                      blurRadius: 8,
+                      offset: const Offset(0, 2),
+                    ),
+                  ],
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'اختيار الشهر',
+                      style: TextManagement.alexandria18RegularBlack.copyWith(
+                        fontSize: 18.sp,
+                        fontWeight: FontWeight.w600,
+                        color: ColorManagement.mainBlue,
+                      ),
+                      semanticsLabel: 'قسم اختيار الشهر',
+                    ),
+                    SizedBox(height: 0.015.sh),
+                    const HorizontalMonthCircles(),
+                  ],
+                ),
+              ),
+              SizedBox(height: 0.03.sh),
+
+              // --- Action Buttons Section ---
+              Container(
+                padding: EdgeInsets.symmetric(
+                    horizontal: 0.04.sw, vertical: 0.02.sh),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(16.r),
+                  boxShadow: [
+                    BoxShadow(
+                      color: ColorManagement.mainBlue.withOpacity(0.1),
+                      blurRadius: 8,
+                      offset: const Offset(0, 2),
+                    ),
+                  ],
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "تحكم في الخصومات",
+                      style: TextManagement.alexandria18RegularBlack.copyWith(
+                        fontSize: 18.sp,
+                        fontWeight: FontWeight.w600,
+                        color: ColorManagement.mainBlue,
+                      ),
+                    ),
+                    SizedBox(height: 0.015.sh),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        _buildActionButton(
+                          icon: FontAwesomeIcons.plus,
+                          color: ColorManagement.mainBlue,
+                          label: 'إضافة',
+                          onPressed: () {
+                            _showAddAbsenceDiscountDialog();
+                          },
+                        ),
+                        // _buildActionButton(
+                        //   icon: FontAwesomeIcons.penToSquare,
+                        //   color: Colors.green,
+                        //   label: 'تعديل',
+                        //   onPressed: () {
+                        //     // Handle edit action
+                        //   },
+                        // ),
+                        _buildActionButton(
+                          icon: FontAwesomeIcons.trash,
+                          color: Colors.red,
+                          label: 'حذف',
+                          onPressed: () {
+                            // Handle delete action
+                          },
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(height: 0.03.sh),
+
+              // --- Absence and Lateness Cards ---
+
+              ContainerShadow(
+                child: Container(
+                  padding: EdgeInsets.symmetric(
+                      horizontal: 0.04.sw, vertical: 0.02.sh),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(16.r),
+                    boxShadow: [
+                      BoxShadow(
+                        color: ColorManagement.mainBlue.withOpacity(0.1),
+                        blurRadius: 8,
+                        offset: const Offset(0, 2),
+                      ),
+                    ],
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                          "تفاصيل الغياب والتأخير لشهر ${DateFormat('M', 'ar').format(DateTime.now())}",
+                          style:
+                              TextManagement.alexandria18RegularBlack.copyWith(
+                            fontSize: 18.sp,
+                            fontWeight: FontWeight.w600,
+                            color: ColorManagement.mainBlue,
+                          )),
+                      SizedBox(height: 0.02.sh),
+                      _buildInfoCard(
+                        icon: FontAwesomeIcons.exclamationTriangle,
+                        color: Colors.red,
+                        text: "عدد أيام الغياب: 7",
+                        gradient: LinearGradient(
+                          colors: [
+                            Colors.red.withOpacity(0.1),
+                            Colors.red.withOpacity(0.05),
+                          ],
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                        ),
+                      ),
+                      SizedBox(height: 0.03.sh),
+                      _buildInfoCard(
+                        icon: FontAwesomeIcons.clock,
+                        color: ColorManagement.accentOrange,
+                        text: "عدد أيام التأخير: 3",
+                        gradient: LinearGradient(
+                          colors: [
+                            ColorManagement.accentOrange.withOpacity(0.1),
+                            ColorManagement.accentOrange.withOpacity(0.05),
+                          ],
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                        ),
+                      ),
+                      SizedBox(height: 0.04.sh),
+                      _buildInfoCard(
+                        icon: FontAwesomeIcons.moneyBill1Wave,
+                        color: ColorManagement.mainBlue,
+                        text: "المرتب بعد الخصومات: 1500 جنية",
+                        gradient: LinearGradient(
+                          colors: [
+                            ColorManagement.mainBlue.withOpacity(0.1),
+                            ColorManagement.mainBlue.withOpacity(0.05),
+                          ],
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
-                SizedBox(
-                  width: 0.05.sw,
-                ),
-                Flexible(
-                  child: Column(children: [
-                    Text(
-                      teacher.name,
-                      style: TextManagement.alexandria24BoldBlack,
-                    ),
-                    Text(
-                      "المرتب: ${teacher.salary}",
-                      style: TextManagement.alexandria16RegularDarkGrey,
-                    ),
-                  ]),
-                )
-              ]),
-              SizedBox(
-                height: 0.02.sh,
               ),
-              Divider(thickness: 1.sp, color: ColorManagement.mainBlue),
-              const HorizontalMonthCircles(),
-              Divider(thickness: 1.sp, color: ColorManagement.mainBlue),
-              SizedBox(
-                height: 0.02.sh,
-              ),
-              ContainerShadow(
-                child: Container(
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      color: ColorManagement.white,
-                      border: Border.all(color: Colors.red),
-                      borderRadius: BorderRadius.circular(12.r),
-                    ),
-                    padding: EdgeInsets.symmetric(
-                        horizontal: 0.02.sw, vertical: 0.02.sh),
-                    child: Row(
-                      children: [
-                        CircleAvatar(
-                          backgroundColor: Colors.red.withOpacity(0.1),
-                          child: FaIcon(
-                            FontAwesomeIcons.exclamation,
-                            color: Colors.red,
-                            size: 0.07.sw,
-                          ),
-                        ),
-                        SizedBox(
-                          width: 0.02.sw,
-                        ),
-                        Text(
-                          "عدد أيام الغياب: 7",
-                          style: TextManagement.alexandria18RegularBlack,
-                        ),
-                      ],
-                    )),
-              ),
-              SizedBox(
-                height: 0.02.sh,
-              ),
-              ContainerShadow(
-                child: Container(
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      color: ColorManagement.white,
-                      border: Border.all(color: ColorManagement.accentOrange),
-                      borderRadius: BorderRadius.circular(12.r),
-                    ),
-                    padding: EdgeInsets.symmetric(
-                        horizontal: 0.02.sw, vertical: 0.02.sh),
-                    child: Row(
-                      children: [
-                        CircleAvatar(
-                          backgroundColor:
-                              ColorManagement.accentOrange.withOpacity(0.1),
-                          child: FaIcon(
-                            FontAwesomeIcons.exclamation,
-                            color: ColorManagement.accentOrange,
-                            size: 0.07.sw,
-                          ),
-                        ),
-                        SizedBox(
-                          width: 0.02.sw,
-                        ),
-                        Text(
-                          "عدد أيام التأخير: 3",
-                          style: TextManagement.alexandria18RegularBlack,
-                        ),
-                      ],
-                    )),
-              )
             ],
           ),
         ),
       ),
+    );
+  }
+
+  // Helper method to build action buttons with labels
+  Widget _buildActionButton({
+    required IconData icon,
+    required Color color,
+    required String label,
+    VoidCallback? onPressed,
+  }) {
+    return Semantics(
+      button: true,
+      label: label,
+      child: Column(
+        children: [
+          GestureDetector(
+            onTap: onPressed,
+            child: AnimatedContainer(
+              duration: const Duration(milliseconds: 200),
+              padding: EdgeInsets.all(0.03.sw),
+              decoration: BoxDecoration(
+                color: color.withOpacity(0.15),
+                borderRadius: BorderRadius.circular(16.r),
+                boxShadow: [
+                  BoxShadow(
+                    color: color.withOpacity(0.2),
+                    blurRadius: 8,
+                    offset: const Offset(0, 2),
+                  ),
+                ],
+              ),
+              child: FaIcon(
+                icon,
+                color: color,
+                size: 0.08.sw,
+              ),
+            ),
+          ),
+          SizedBox(height: 0.015.sh),
+          Text(
+            label,
+            style: TextManagement.alexandria16RegularBlack.copyWith(
+              color: color,
+              fontSize: 16.sp,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  // Helper method to build information cards
+  Widget _buildInfoCard({
+    required IconData icon,
+    required Color color,
+    required String text,
+    required LinearGradient gradient,
+  }) {
+    return Container(
+      width: double.infinity,
+      padding: EdgeInsets.symmetric(horizontal: 0.05.sw, vertical: 0.03.sh),
+      decoration: BoxDecoration(
+        gradient: gradient,
+        border: Border.all(color: color.withOpacity(0.2)),
+        borderRadius: BorderRadius.circular(16.r),
+      ),
+      child: Row(
+        children: [
+          CircleAvatar(
+            backgroundColor: color.withOpacity(0.2),
+            radius: 0.07.sw,
+            child: FaIcon(
+              icon,
+              color: color,
+              size: 0.08.sw,
+            ),
+          ),
+          SizedBox(width: 0.05.sw),
+          Expanded(
+            child: Text(
+              text,
+              style: TextManagement.alexandria18RegularBlack.copyWith(
+                fontSize: 18.sp,
+                fontWeight: FontWeight.w600,
+                color: ColorManagement.black.withOpacity(0.9),
+              ),
+              semanticsLabel: text,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _showAddAbsenceDiscountDialog() {
+    final TextEditingController absenceController = TextEditingController();
+    final TextEditingController discountController = TextEditingController();
+    DateTime currentDate = DateTime.now();
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(
+            'إضافة غياب وخصومات أخرى',
+            style: TextManagement.alexandria18RegularBlack,
+          ),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                ContainerShadow(
+                  child: TextField(
+                    controller: absenceController,
+                    keyboardType: TextInputType.number,
+                    decoration:
+                        const InputDecoration(hintText: "عدد أيام الغياب"),
+                  ),
+                ),
+                SizedBox(height: 0.01.sh),
+                ContainerShadow(
+                  child: TextField(
+                    controller: discountController,
+                    keyboardType: TextInputType.number,
+                    decoration: const InputDecoration(hintText: "خصومات أخرى"),
+                  ),
+                ),
+                SizedBox(height: 0.02.sh),
+                SizedBox(
+                  width: 300.w,
+                  height: 400.h,
+                  child: MonthPicker(
+                    selectedCellTextStyle:
+                        TextManagement.alexandria16RegularWhite,
+                    minDate: DateTime(2025, 7),
+                    maxDate: DateTime(2026, 12),
+                    initialDate: currentDate,
+                    onDateSelected: (value) {
+                      currentDate = value;
+                    },
+                  ),
+                ),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child:
+                  Text('إلغاء', style: TextManagement.alexandria16RegularBlack),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            ElevatedButton(
+              child:
+                  Text('إضافة', style: TextManagement.alexandria16RegularWhite),
+              onPressed: () async {
+                widget.teacher.daysAbsent =
+                    int.tryParse(absenceController.text) ?? 0;
+                widget.teacher.lateDays =
+                    int.tryParse(discountController.text) ?? 0;
+
+                await teacherManagementCubit.setTeacherAbsenceAndLateDays(
+                  widget.teacher,
+                  DateHelper.getCurrentMonthAndYear(),
+                );
+                AppSnackBars.showSuccessSnackBar(
+                    // ignore: use_build_context_synchronously
+                    context: context,
+                    successMsg: 'تم إضافة الغياب والخصومات بنجاح');
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
     );
   }
 }

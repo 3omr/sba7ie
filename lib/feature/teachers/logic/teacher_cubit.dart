@@ -17,12 +17,15 @@ class TeacherCubit extends Cubit<TeacherState> {
   /// If an error occurs, emits [TeacherError] with the error message.
   Future<void> getTeachers() async {
     emit(TeacherLoading());
-    try {
-      teachers = await _teacherRepo.getTeachers();
-      teachers.isEmpty ? emit(EmptyTeachers()) : emit(TeacherLoaded(teachers));
-    } catch (e) {
-      emit(TeacherError(e.toString()));
-    }
+    var resp = await _teacherRepo.getTeachers();
+    resp.when(
+        success: (success) {
+          teachers = success.data;
+          teachers.isEmpty
+              ? emit(EmptyTeachers())
+              : emit(TeacherLoaded(teachers));
+        },
+        failure: (e) => emit(TeacherError(e.toString())));
   }
 
   addTeacher(Teacher teacher) async {

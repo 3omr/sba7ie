@@ -12,12 +12,18 @@ class ThemeManagement {
         onSecondary: ColorManagement.white,
       ),
       scaffoldBackgroundColor: ColorManagement.lightGrey,
+
+      // AppBar
       appBarTheme: AppBarTheme(
-        titleTextStyle: TextManagement.alexandria20RegularBlack,
+        titleTextStyle: TextManagement.alexandria20RegularBlack.copyWith(
+          color: ColorManagement.mainBlue,
+          fontWeight: FontWeight.w700,
+        ),
         elevation: 0,
-        backgroundColor: Colors.transparent,
         foregroundColor: ColorManagement.mainBlue,
         centerTitle: true,
+        backgroundColor: Colors.white,
+        shadowColor: ColorManagement.mainBlue.withOpacity(0.2),
       ),
       inputDecorationTheme: InputDecorationTheme(
         hintStyle: TextManagement.alexandria16RegularDarkGrey,
@@ -29,5 +35,19 @@ class ThemeManagement {
         ),
         filled: true,
         fillColor: Colors.transparent,
-      ));
+      ),
+      elevatedButtonTheme: ElevatedButtonThemeData(
+          style: ElevatedButton.styleFrom(
+        backgroundColor: ColorManagement.mainBlue,
+        padding: EdgeInsets.symmetric(
+          horizontal: 32.w,
+          vertical: 16.h,
+        ),
+        textStyle: TextManagement.alexandria16RegularWhite,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12.r),
+        ),
+        elevation: 4,
+        shadowColor: ColorManagement.darkGrey.withOpacity(0.3),
+      )));
 }
