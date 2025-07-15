@@ -7,8 +7,6 @@ class TeacherManagementRepo {
 
   TeacherManagementRepo(this._db);
 
-  // --- Absence Management Operations (New Additions) ---
-
   // Gets all teachers along with their absence/late days for a specific month
   Future<Result<List<Teacher>>> getTeachersWithAbsenceForMonth(
       String monthYear) async {

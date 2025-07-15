@@ -13,6 +13,11 @@ class Teacher {
     this.lateDays = 0,
   });
 
+  setAbsencesAndLateDays(int daysAbsent, int lateDays) {
+    this.daysAbsent = daysAbsent;
+    this.lateDays = lateDays;
+  }
+
   factory Teacher.fromJson(Map<dynamic, dynamic> json) {
     return Teacher(
       id: json["id"] as int?,
@@ -29,6 +34,7 @@ class Teacher {
       lateDays: (json["lateDays"] ?? 0) as int,
     );
   }
+
   Map<String, Object?> toJson() {
     return {
       "name": name,

@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
+import 'package:tasneem_sba7ie/core/helper/date_helper.dart';
 import 'package:tasneem_sba7ie/core/theme/color_management.dart';
 import 'package:tasneem_sba7ie/core/theme/text_management.dart';
+import 'package:tasneem_sba7ie/feature/teachers/logic/teacher_management_cubit/teacher_management_cubit.dart';
 
 class HorizontalMonthCircles extends StatefulWidget {
   const HorizontalMonthCircles({super.key});
@@ -17,8 +20,9 @@ class _HorizontalMonthCirclesState extends State<HorizontalMonthCircles> {
   @override
   void initState() {
     super.initState();
-    final DateTime now = DateTime.now();
-    _selectedMonthIndex = now.month - 1; // Current month as selected
+    _selectedMonthIndex = DateHelper.convertCurrentMonthToInt(
+            context.read<TeacherManagementCubit>().currentMonth) -
+        1;
   }
 
   @override
@@ -48,6 +52,13 @@ class _HorizontalMonthCirclesState extends State<HorizontalMonthCircles> {
               onTap: () {
                 setState(() {
                   _selectedMonthIndex = index;
+                  String month = index + 1 > 12
+                      ? '${(index + 1) % 12}-2026'
+                      : '${index + 1}-2025';
+                  month = DateFormat("MM-yyyy")
+                      .format(DateFormat("MM-yyyy").parse(month))
+                      .toString();
+                  context.read<TeacherManagementCubit>().changeMonth(month);
                 });
               },
               child: AnimatedContainer(
@@ -91,10 +102,9 @@ class _HorizontalMonthCirclesState extends State<HorizontalMonthCircles> {
                     children: [
                       Text(
                         monthName,
-                        style: TextManagement.alexandria18RegularBlack.copyWith(
+                        style: TextManagement.alexandria16RegularWhite.copyWith(
                           color:
                               isSelected ? Colors.white : ColorManagement.black,
-                          fontSize: 20.sp,
                           fontWeight:
                               isSelected ? FontWeight.w800 : FontWeight.w500,
                         ),

@@ -5,6 +5,12 @@ import 'package:tasneem_sba7ie/core/theme/color_management.dart';
 
 class TextManagement {
   // Alexandria Font Styles
+  static TextStyle alexandria14RegularDarkGrey = GoogleFonts.alexandria(
+    fontSize: 14.0.sp,
+    fontWeight: FontWeight.w400,
+    color: ColorManagement.darkGrey.withOpacity(0.5),
+  );
+
   static TextStyle alexandria16RegularBlack = GoogleFonts.alexandria(
     fontSize: 16.0.sp,
     fontWeight: FontWeight.w400,
@@ -30,6 +36,11 @@ class TextManagement {
     fontSize: 18.0.sp,
     fontWeight: FontWeight.w400,
     color: ColorManagement.black,
+  );
+  static TextStyle alexandria18BoldMainBlue = GoogleFonts.alexandria(
+    fontSize: 18.0.sp,
+    fontWeight: FontWeight.w600,
+    color: ColorManagement.mainBlue,
   );
   static TextStyle alexandria20RegularBlack = GoogleFonts.alexandria(
     fontSize: 20.0.sp,

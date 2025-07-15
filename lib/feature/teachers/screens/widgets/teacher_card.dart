@@ -65,13 +65,13 @@ class TeacherCard extends StatelessWidget {
                     children: [
                       Text(
                         teacher.name ?? '',
-                        style: TextManagement.alexandria18RegularBlack,
+                        style: TextManagement.alexandria16RegularBlack,
                         overflow: TextOverflow.ellipsis,
                         maxLines: 1,
                       ),
                       SizedBox(height: 4.h),
                       Text('المرتب: ${teacher.salary}',
-                          style: TextManagement.alexandria16RegularDarkGrey),
+                          style: TextManagement.alexandria14RegularDarkGrey),
                     ],
                   ),
                 ),
