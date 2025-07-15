@@ -60,4 +60,24 @@ class TeacherManagementCubit extends Cubit<TeacherManagementState> {
       failure: (e) => emit(TeacherDetailsError(e.toString())),
     );
   }
+
+  Future<void> deleteTeacherAbsences({required bool isAllMonths}) async {
+    emit(TeacherDetailsLoading());
+    var resp = await _teacherRepo.deleteTeacherAbsences(
+        teacherId: _teacher.id!,
+        month: isAllMonths == true ? null : _currentMonth);
+    resp.when(
+      success: (success) {
+        if (isAllMonths) {
+          _teacher.daysAbsent = 0;
+          _teacher.lateDays = 0;
+        } else {
+          _teacher.daysAbsent = null;
+          _teacher.lateDays = null;
+        }
+        emit(TeacherDetailsLoaded(_teacher));
+      },
+      failure: (e) => emit(TeacherDetailsError(e.toString())),
+    );
+  }
 }

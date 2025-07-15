@@ -31,6 +31,11 @@ class TextManagement {
     fontWeight: FontWeight.w400,
     color: ColorManagement.darkGrey.withOpacity(0.5),
   );
+  static TextStyle alexandria16BoldMainBlue = GoogleFonts.alexandria(
+    fontSize: 16.0.sp,
+    fontWeight: FontWeight.w600,
+    color: ColorManagement.mainBlue,
+  );
 
   static TextStyle alexandria18RegularBlack = GoogleFonts.alexandria(
     fontSize: 18.0.sp,
