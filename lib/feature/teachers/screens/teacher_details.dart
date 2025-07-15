@@ -90,12 +90,13 @@ class _TeacherDetailsState extends State<TeacherDetails> {
                           ),
                           SizedBox(height: 0.01.sh),
                           Text(
-                            "المرتب: ${widget.teacher.salary}",
+                            "المرتب: ${widget.teacher.salary} جنيه",
                             style: TextManagement.alexandria16RegularDarkGrey
                                 .copyWith(
                               color: ColorManagement.darkGrey.withOpacity(0.8),
                             ),
-                            semanticsLabel: 'المرتب: ${widget.teacher.salary}',
+                            semanticsLabel:
+                                'المرتب: ${widget.teacher.salary} جنيه',
                           ),
                         ],
                       ),
@@ -218,7 +219,7 @@ class _TeacherDetailsState extends State<TeacherDetails> {
                             icon: FontAwesomeIcons.exclamationTriangle,
                             color: Colors.red,
                             text:
-                                "عدد أيام الغياب: ${widget.teacher.daysAbsent ?? 0}",
+                                "عدد أيام الغياب: ${widget.teacher.daysAbsent ?? 0} يوم",
                             gradient: LinearGradient(
                               colors: [
                                 Colors.red.withOpacity(0.1),
@@ -233,7 +234,7 @@ class _TeacherDetailsState extends State<TeacherDetails> {
                             icon: FontAwesomeIcons.clock,
                             color: ColorManagement.accentOrange,
                             text:
-                                "عدد أيام التأخير: ${widget.teacher.lateDays ?? 0}",
+                                "الخصومات: ${widget.teacher.discounts ?? 0} جنيه",
                             gradient: LinearGradient(
                               colors: [
                                 ColorManagement.accentOrange.withOpacity(0.1),
@@ -247,7 +248,8 @@ class _TeacherDetailsState extends State<TeacherDetails> {
                           TeacherInfoCard(
                             icon: FontAwesomeIcons.moneyBill1Wave,
                             color: ColorManagement.mainBlue,
-                            text: "المرتب بعد الخصومات: 1500 جنية",
+                            text:
+                                "المرتب بعد الخصم: ${teacherManagementCubit.teacher.calculateNetSalary()} جنية",
                             gradient: LinearGradient(
                               colors: [
                                 ColorManagement.mainBlue.withOpacity(0.1),

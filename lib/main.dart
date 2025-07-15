@@ -10,7 +10,6 @@ Future<void> main() async {
   // Initialize ScreenUtil
   await ScreenUtil.ensureScreenSize();
   getItSetup();
-  // await initServices();
   runApp(const MyApp());
 }
 

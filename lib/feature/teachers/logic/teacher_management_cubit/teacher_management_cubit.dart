@@ -18,21 +18,21 @@ class TeacherManagementCubit extends Cubit<TeacherManagementState> {
   // Sets the teacher and fetches their absence and late days for the current month
   void setTeacher(Teacher teacher) {
     _teacher = teacher;
-    getTeacherAbsenceAndLateDays(_teacher.id!, _currentMonth);
+    getTeacherAbsenceAnddiscounts(_teacher.id!, _currentMonth);
     emit(TeacherDetailsInitial());
   }
 
-  setTeacherAbsenceAndLateDays(
-      {int? absentDays, int? lateDays, String? month}) async {
+  setTeacherAbsenceAndDiscounts(
+      {int? absentDays, int? discounts, String? month}) async {
     _teacher.daysAbsent = absentDays;
-    _teacher.lateDays = lateDays;
+    _teacher.discounts = discounts;
 
     emit(TeacherDetailsLoading());
-    var resp = await _teacherRepo.setTeacherAbsenceAndLateDays(_teacher.id!,
-        month ?? _currentMonth, _teacher.daysAbsent!, _teacher.lateDays!);
+    var resp = await _teacherRepo.setTeacherAbsenceAndDiscounts(_teacher.id!,
+        month ?? _currentMonth, _teacher.daysAbsent!, _teacher.discounts!);
     resp.when(
       success: (success) {
-        getTeacherAbsenceAndLateDays(_teacher.id!, _currentMonth);
+        getTeacherAbsenceAnddiscounts(_teacher.id!, _currentMonth);
         emit(TeacherDetailsLoaded(teacher));
       },
       failure: (e) => emit(TeacherDetailsError(e.toString())),
@@ -41,20 +41,21 @@ class TeacherManagementCubit extends Cubit<TeacherManagementState> {
 
   Future<void> changeMonth(String month) async {
     _currentMonth = month;
-    await getTeacherAbsenceAndLateDays(
+    await getTeacherAbsenceAnddiscounts(
         _teacher.id!, DateHelper.getFormattedCurrentDate(month));
 
     emit(TeacherDetailsInitial());
   }
 
-  Future<void> getTeacherAbsenceAndLateDays(int teacherId, String month) async {
+  Future<void> getTeacherAbsenceAnddiscounts(
+      int teacherId, String month) async {
     emit(TeacherDetailsLoading());
     var resp =
-        await _teacherRepo.getTeacherAbsenceAndLateDays(teacherId, month);
+        await _teacherRepo.getTeacherAbsenceAnddiscounts(teacherId, month);
     resp.when(
       success: (success) {
         _teacher.daysAbsent = success.data.daysAbsent;
-        _teacher.lateDays = success.data.lateDays;
+        _teacher.discounts = success.data.discounts;
         emit(TeacherDetailsLoaded(success.data));
       },
       failure: (e) => emit(TeacherDetailsError(e.toString())),
@@ -70,10 +71,10 @@ class TeacherManagementCubit extends Cubit<TeacherManagementState> {
       success: (success) {
         if (isAllMonths) {
           _teacher.daysAbsent = 0;
-          _teacher.lateDays = 0;
+          _teacher.discounts = 0;
         } else {
           _teacher.daysAbsent = null;
-          _teacher.lateDays = null;
+          _teacher.discounts = null;
         }
         emit(TeacherDetailsLoaded(_teacher));
       },

@@ -20,11 +20,11 @@ class TeacherManagementRepo {
   }
 
   // Adds or updates absence and late days for a teacher for a given month
-  Future<Result<int>> setTeacherAbsenceAndLateDays(
-      int teacherId, String month, int daysAbsent, int lateDays) async {
+  Future<Result<int>> setTeacherAbsenceAndDiscounts(
+      int teacherId, String month, int daysAbsent, int discounts) async {
     try {
       int result =
-          await _db.setTeacherAbsence(teacherId, month, daysAbsent, lateDays);
+          await _db.setTeacherAbsence(teacherId, month, daysAbsent, discounts);
       return Success(result);
     } catch (e) {
       return Failure(e.toString());
@@ -32,10 +32,10 @@ class TeacherManagementRepo {
   }
 
   // Retrieves absence and late days for a specific teacher and month
-  Future<Result<Teacher>> getTeacherAbsenceAndLateDays(
+  Future<Result<Teacher>> getTeacherAbsenceAnddiscounts(
       int teacherId, String month) async {
     try {
-      var resp = await _db.getTeacherAbsenceAndLateDays(teacherId, month);
+      var resp = await _db.getTeacherAbsenceAnddiscounts(teacherId, month);
       return Success(Teacher.absenceFromJson(resp));
     } catch (e) {
       return Failure(e.toString());

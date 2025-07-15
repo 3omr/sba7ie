@@ -22,7 +22,7 @@ class TeacherInfoCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-      padding: EdgeInsets.symmetric(horizontal: 0.05.sw, vertical: 0.02.sh),
+      padding: EdgeInsets.symmetric(horizontal: 0.05.sw, vertical: 0.01.sh),
       decoration: BoxDecoration(
         gradient: gradient,
         border: Border.all(color: color.withOpacity(0.2)),
@@ -43,7 +43,7 @@ class TeacherInfoCard extends StatelessWidget {
           Expanded(
             child: Text(
               text,
-              style: TextManagement.alexandria16RegularBlack.copyWith(
+              style: TextManagement.alexandria14RegularDarkGrey.copyWith(
                 fontWeight: FontWeight.w600,
                 color: ColorManagement.black.withOpacity(0.9),
               ),

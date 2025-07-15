@@ -61,7 +61,7 @@ class Db {
     teacherId INTEGER NOT NULL,
     month TEXT NOT NULL,
     daysAbsent INTEGER NOT NULL DEFAULT 0,
-    lateDays INTEGER NOT NULL DEFAULT 0,
+    discounts INTEGER NOT NULL DEFAULT 0,
     FOREIGN KEY (teacherId) REFERENCES `teachers`(`id`) ON DELETE CASCADE ON UPDATE CASCADE
     );
     ''');
@@ -110,7 +110,7 @@ class Db {
   //--------------- absences CRUD -------------------------
 
   Future<int> setTeacherAbsence(
-      int teacherId, String month, int daysAbsent, int lateDays) async {
+      int teacherId, String month, int daysAbsent, int discounts) async {
     Database? data = await db;
     List<Map<String, Object?>> existingAbsence = await data!.query(
       'absences',
@@ -121,7 +121,7 @@ class Db {
     if (existingAbsence.isNotEmpty) {
       return await data.update(
         'absences',
-        {'daysAbsent': daysAbsent, 'lateDays': lateDays},
+        {'daysAbsent': daysAbsent, 'discounts': discounts},
         where: 'teacherId = ? AND month = ?',
         whereArgs: [teacherId, month],
       );
@@ -132,7 +132,7 @@ class Db {
           'teacherId': teacherId,
           'month': month,
           'daysAbsent': daysAbsent,
-          'lateDays': lateDays
+          'discounts': discounts
         },
       );
     }
@@ -183,7 +183,7 @@ class Db {
         t.name,
         t.salary,
         IFNULL(a.daysAbsent, 0) AS daysAbsent,
-        IFNULL(a.lateDays, 0) AS lateDays
+        IFNULL(a.discounts, 0) AS discounts
       FROM
         teachers t
       LEFT JOIN
@@ -193,21 +193,21 @@ class Db {
     return res.map((e) => e.map((key, value) => MapEntry(key, value))).toList();
   }
 
-  Future<Map<String, int>> getTeacherAbsenceAndLateDays(
+  Future<Map<String, int>> getTeacherAbsenceAnddiscounts(
       int teacherId, String month) async {
     Database? data = await db;
     List<Map<String, Object?>> res = await data!.query(
       'absences',
-      columns: ['daysAbsent', 'lateDays'],
+      columns: ['daysAbsent', 'discounts'],
       where: 'teacherId = ? AND month = ?',
       whereArgs: [teacherId, month],
     );
     if (res.isNotEmpty) {
       return {
         'daysAbsent': res.first['daysAbsent'] as int,
-        'lateDays': res.first['lateDays'] as int,
+        'discounts': res.first['discounts'] as int,
       };
     }
-    return {'daysAbsent': 0, 'lateDays': 0};
+    return {'daysAbsent': 0, 'discounts': 0};
   }
 }
