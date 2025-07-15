@@ -1,7 +1,7 @@
 import 'package:tasneem_sba7ie/feature/students/data/models/student_model.dart';
-import 'package:tasneem_sba7ie/sql_database/tabels_name.dart';
+import 'package:tasneem_sba7ie/core/database/tabels_name.dart';
 
-import '../../../../sql_database/db.dart';
+import '../../../../core/database/db.dart';
 
 class StudentRepo {
   Db db = Db();

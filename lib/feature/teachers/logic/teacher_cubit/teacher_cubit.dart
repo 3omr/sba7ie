@@ -30,37 +30,41 @@ class TeacherCubit extends Cubit<TeacherState> {
 
   addTeacher(Teacher teacher) async {
     emit(TeacherLoading());
-    try {
-      await _teacherRepo.addTeacher(teacher);
-      getTeachers(); // Refresh the list after adding
-      emit(TeacherAdded());
-    } catch (e) {
-      emit(TeacherError(e.toString()));
-    }
+    var resp = await _teacherRepo.addTeacher(teacher);
+    resp.when(
+      success: (success) {
+        getTeachers(); // Refresh the list after adding
+        emit(TeacherAdded());
+      },
+      failure: (e) => emit(TeacherError(e.toString())),
+    );
   }
 
   updateTeacher(
       {required Teacher oldTeacherData,
       required Teacher newTeacherData}) async {
     emit(TeacherLoading());
-    try {
-      await _teacherRepo.updateTeacher(oldTeacherData, newTeacherData);
-      int index = teachers.indexOf(oldTeacherData);
-      teachers[index] = newTeacherData;
-      emit(TeacherAdded());
-    } catch (e) {
-      emit(TeacherError(e.toString()));
-    }
+    var resp = await _teacherRepo.updateTeacher(oldTeacherData, newTeacherData);
+    resp.when(
+      success: (success) {
+        int index = teachers.indexOf(oldTeacherData);
+        teachers[index] = newTeacherData;
+        emit(TeacherAdded());
+      },
+      failure: (e) => emit(TeacherError(e.toString())),
+    );
   }
 
   deleteTeacher(Teacher teacher) async {
-    try {
-      await _teacherRepo.deleteTeacher(teacher.id!);
-      teachers.remove(teacher);
-      getTeachers(); // Refresh the list after deleting
-      emit(TeacherLoaded(teachers));
-    } catch (e) {
-      emit(TeacherError(e.toString()));
-    }
+    emit(TeacherLoading());
+    var resp = await _teacherRepo.deleteTeacher(teacher.id!);
+    resp.when(
+      success: (success) {
+        teachers.remove(teacher);
+        getTeachers(); // Refresh the list after deleting
+        emit(TeacherLoaded(teachers));
+      },
+      failure: (e) => emit(TeacherError(e.toString())),
+    );
   }
 }

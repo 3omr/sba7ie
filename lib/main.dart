@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get/get.dart';
 import 'package:tasneem_sba7ie/core/get_it/get_it.dart';
 import 'package:tasneem_sba7ie/core/router/app_router.dart';
 import 'package:tasneem_sba7ie/core/theme/theme_management.dart';
-import 'package:tasneem_sba7ie/services/data_service.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
 Future<void> main() async {
@@ -14,10 +12,6 @@ Future<void> main() async {
   getItSetup();
   // await initServices();
   runApp(const MyApp());
-}
-
-Future<void> initServices() async {
-  await Get.putAsync<DataService>(() async => DataService());
 }
 
 class MyApp extends StatelessWidget {

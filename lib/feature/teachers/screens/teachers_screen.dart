@@ -8,7 +8,7 @@ import 'package:tasneem_sba7ie/core/widgets/Error_state_widget.dart';
 import 'package:tasneem_sba7ie/core/widgets/container_background.dart';
 import 'package:tasneem_sba7ie/core/widgets/empty_state_widget.dart';
 import 'package:tasneem_sba7ie/feature/teachers/data/models/teacher_model.dart';
-import 'package:tasneem_sba7ie/feature/teachers/logic/teacher_cubit.dart';
+import 'package:tasneem_sba7ie/feature/teachers/logic/teacher_cubit/teacher_cubit.dart';
 import 'package:tasneem_sba7ie/feature/teachers/screens/widgets/teacher_card.dart';
 
 class TeachersScreen extends StatelessWidget {

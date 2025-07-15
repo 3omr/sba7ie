@@ -1,7 +1,7 @@
 import 'package:tasneem_sba7ie/core/helper/result.dart';
 import 'package:tasneem_sba7ie/feature/teachers/data/models/teacher_model.dart';
-import 'package:tasneem_sba7ie/sql_database/db.dart';
-import 'package:tasneem_sba7ie/sql_database/tabels_name.dart'; // Make sure this contains your table names
+import 'package:tasneem_sba7ie/core/database/db.dart';
+import 'package:tasneem_sba7ie/core/database/tabels_name.dart'; // Make sure this contains your table names
 
 class TeacherRepo {
   final Db _db;
@@ -21,24 +21,32 @@ class TeacherRepo {
     }
   }
 
-  Future<int> addTeacher(Teacher teacher) async {
-    // Use the specific toMapForDb() method from the Teacher model
-    int resp = await _db.insertData(teachersTable, teacher.toJson());
-    return resp;
+  Future<Result<int>> addTeacher(Teacher teacher) async {
+    try {
+      int resp = await _db.insertData(teachersTable, teacher.toJson());
+      return Success(resp);
+    } catch (e) {
+      return Failure(e.toString());
+    }
   }
 
-  Future<int> updateTeacher(
+  Future<Result<int>> updateTeacher(
       Teacher oldTeacherData, Teacher newTeacherData) async {
-    // Use the specific toMapForDb() method from the Teacher model
-    int resp = await _db.updateData(
-        teachersTable, newTeacherData.toJson(), "id = ${oldTeacherData.id}");
-    return resp;
+    try {
+      int resp = await _db.updateData(
+          teachersTable, newTeacherData.toJson(), "id = ${oldTeacherData.id}");
+      return Success(resp);
+    } catch (e) {
+      return Failure(e.toString());
+    }
   }
 
-  Future<int> deleteTeacher(int teacherId) async {
-    // Note: Due to ON DELETE CASCADE, deleting a teacher will automatically
-    // delete all their associated absence records.
-    int resp = await _db.deleteData(teachersTable, "id = $teacherId");
-    return resp;
+  Future<Result<int>> deleteTeacher(int teacherId) async {
+    try {
+      int resp = await _db.deleteData(teachersTable, "id = $teacherId");
+      return Success(resp);
+    } catch (e) {
+      return Failure(e.toString());
+    }
   }
 }

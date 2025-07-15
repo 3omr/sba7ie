@@ -8,7 +8,7 @@ import 'package:tasneem_sba7ie/core/theme/color_management.dart';
 import 'package:tasneem_sba7ie/core/theme/text_management.dart';
 import 'package:tasneem_sba7ie/core/widgets/delete_dialog.dart';
 import 'package:tasneem_sba7ie/feature/teachers/data/models/teacher_model.dart';
-import 'package:tasneem_sba7ie/feature/teachers/logic/teacher_cubit.dart';
+import 'package:tasneem_sba7ie/feature/teachers/logic/teacher_cubit/teacher_cubit.dart';
 
 class TeacherCard extends StatelessWidget {
   final Teacher teacher;

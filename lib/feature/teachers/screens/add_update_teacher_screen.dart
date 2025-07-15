@@ -8,7 +8,7 @@ import 'package:tasneem_sba7ie/core/widgets/app_snack_bars.dart';
 import 'package:tasneem_sba7ie/core/widgets/container_background.dart';
 import 'package:tasneem_sba7ie/core/widgets/container_shadow.dart';
 import 'package:tasneem_sba7ie/feature/teachers/data/models/teacher_model.dart';
-import 'package:tasneem_sba7ie/feature/teachers/logic/teacher_cubit.dart';
+import 'package:tasneem_sba7ie/feature/teachers/logic/teacher_cubit/teacher_cubit.dart';
 
 class AddUpdateTeacherScreen extends StatefulWidget {
   // Make the teacher parameter nullable to indicate add or update mode

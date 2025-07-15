@@ -24,10 +24,10 @@ class Student {
 
   Map<String, Object?> toJson() {
     return {
-      "name": this.name,
-      "subscription": this.subscription,
-      "phoneNumber": this.phoneNumber,
-      "idTeacher": this.idTeacher,
+      "name": name,
+      "subscription": subscription,
+      "phoneNumber": phoneNumber,
+      "idTeacher": idTeacher,
     };
   }
 }

@@ -1,6 +1,6 @@
 import 'package:tasneem_sba7ie/models/subscription_model.dart';
-import 'package:tasneem_sba7ie/sql_database/tabels_name.dart';
-import '../sql_database/db.dart';
+import 'package:tasneem_sba7ie/core/database/tabels_name.dart';
+import '../core/database/db.dart';
 
 class SubscriptionRepo {
   Db db = Db();

@@ -17,9 +17,9 @@ class Subscription {
 
   Map<String, Object?> toJson() {
     return {
-      "idStudent": this.idStudent,
-      "money": this.money,
-      "date": this.date,
+      "idStudent": idStudent,
+      "money": money,
+      "date": date,
     };
   }
 }

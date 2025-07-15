@@ -1,9 +1,9 @@
 import 'package:get_it/get_it.dart';
 import 'package:tasneem_sba7ie/feature/teachers/data/repos/teacher_management_repo.dart';
 import 'package:tasneem_sba7ie/feature/teachers/data/repos/teacher_repo.dart';
-import 'package:tasneem_sba7ie/feature/teachers/logic/teacher_cubit.dart';
-import 'package:tasneem_sba7ie/feature/teachers/logic/teacher_details_cubit.dart';
-import 'package:tasneem_sba7ie/sql_database/db.dart';
+import 'package:tasneem_sba7ie/feature/teachers/logic/teacher_cubit/teacher_cubit.dart';
+import 'package:tasneem_sba7ie/feature/teachers/logic/teacher_management_cubit/teacher_management_cubit.dart';
+import 'package:tasneem_sba7ie/core/database/db.dart';
 
 GetIt getIt = GetIt.instance;
 void getItSetup() {

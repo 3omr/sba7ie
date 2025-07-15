@@ -47,14 +47,14 @@ class ListTileCard extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             IconButton(
-              icon: Icon(
+              icon: const Icon(
                 Icons.edit,
                 color: ColorManagement.mainBlue,
               ),
               onPressed: onEdite,
             ),
             IconButton(
-                icon: Icon(
+                icon: const Icon(
                   Icons.delete,
                   color: ColorManagement.mainBlue,
                 ),

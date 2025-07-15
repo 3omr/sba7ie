@@ -11,7 +11,7 @@ import 'package:tasneem_sba7ie/core/widgets/app_snack_bars.dart';
 import 'package:tasneem_sba7ie/core/widgets/container_shadow.dart';
 import 'package:tasneem_sba7ie/core/widgets/horizontal_month_circles.dart';
 import 'package:tasneem_sba7ie/feature/teachers/data/models/teacher_model.dart';
-import 'package:tasneem_sba7ie/feature/teachers/logic/teacher_details_cubit.dart';
+import 'package:tasneem_sba7ie/feature/teachers/logic/teacher_management_cubit/teacher_management_cubit.dart';
 
 class TeacherDetails extends StatefulWidget {
   final Teacher teacher;
