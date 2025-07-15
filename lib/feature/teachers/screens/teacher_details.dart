@@ -12,6 +12,7 @@ import 'package:tasneem_sba7ie/core/widgets/container_shadow.dart';
 import 'package:tasneem_sba7ie/core/widgets/horizontal_month_circles.dart';
 import 'package:tasneem_sba7ie/feature/teachers/data/models/teacher_model.dart';
 import 'package:tasneem_sba7ie/feature/teachers/logic/teacher_management_cubit/teacher_management_cubit.dart';
+import 'package:tasneem_sba7ie/feature/teachers/logic/teacher_management_cubit/teacher_management_state.dart';
 
 class TeacherDetails extends StatefulWidget {
   final Teacher teacher;
@@ -28,8 +29,7 @@ class _TeacherDetailsState extends State<TeacherDetails> {
   initState() {
     super.initState();
     teacherManagementCubit = context.read<TeacherManagementCubit>();
-    teacherManagementCubit.getTeacherAbsenceAndLateDays(
-        widget.teacher.id!, DateHelper.getCurrentMonthAndYear());
+    teacherManagementCubit.setTeacher(widget.teacher);
   }
 
   @override
@@ -103,7 +103,7 @@ class _TeacherDetailsState extends State<TeacherDetails> {
                   ],
                 ),
               ),
-              SizedBox(height: 0.03.sh),
+              SizedBox(height: 0.04.sh),
 
               // --- Monthly Navigation ---
               Container(
@@ -125,11 +125,7 @@ class _TeacherDetailsState extends State<TeacherDetails> {
                   children: [
                     Text(
                       'اختيار الشهر',
-                      style: TextManagement.alexandria18RegularBlack.copyWith(
-                        fontSize: 18.sp,
-                        fontWeight: FontWeight.w600,
-                        color: ColorManagement.mainBlue,
-                      ),
+                      style: TextManagement.alexandria18BoldMainBlue,
                       semanticsLabel: 'قسم اختيار الشهر',
                     ),
                     SizedBox(height: 0.015.sh),
@@ -137,7 +133,7 @@ class _TeacherDetailsState extends State<TeacherDetails> {
                   ],
                 ),
               ),
-              SizedBox(height: 0.03.sh),
+              SizedBox(height: 0.04.sh),
 
               // --- Action Buttons Section ---
               Container(
@@ -157,15 +153,9 @@ class _TeacherDetailsState extends State<TeacherDetails> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      "تحكم في الخصومات",
-                      style: TextManagement.alexandria18RegularBlack.copyWith(
-                        fontSize: 18.sp,
-                        fontWeight: FontWeight.w600,
-                        color: ColorManagement.mainBlue,
-                      ),
-                    ),
-                    SizedBox(height: 0.015.sh),
+                    Text("تحكم في الخصومات",
+                        style: TextManagement.alexandria18BoldMainBlue),
+                    SizedBox(height: 0.04.sh),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
@@ -190,7 +180,7 @@ class _TeacherDetailsState extends State<TeacherDetails> {
                           color: Colors.red,
                           label: 'حذف',
                           onPressed: () {
-                            // Handle delete action
+                            _showDeleteAbsencesDialog();
                           },
                         ),
                       ],
@@ -198,7 +188,7 @@ class _TeacherDetailsState extends State<TeacherDetails> {
                   ],
                 ),
               ),
-              SizedBox(height: 0.03.sh),
+              SizedBox(height: 0.04.sh),
 
               // --- Absence and Lateness Cards ---
 
@@ -217,60 +207,62 @@ class _TeacherDetailsState extends State<TeacherDetails> {
                       ),
                     ],
                   ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                          "تفاصيل الغياب والتأخير لشهر ${DateFormat('M', 'ar').format(DateTime.now())}",
-                          style:
-                              TextManagement.alexandria18RegularBlack.copyWith(
-                            fontSize: 18.sp,
-                            fontWeight: FontWeight.w600,
+                  child: BlocBuilder<TeacherManagementCubit,
+                      TeacherManagementState>(
+                    builder: (context, state) {
+                      return Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                              "تفاصيل الغياب والتأخير لشهر ${DateHelper.getArabicMonthName(context.read<TeacherManagementCubit>().currentMonth)}",
+                              style: TextManagement.alexandria18BoldMainBlue),
+                          SizedBox(height: 0.04.sh),
+                          _buildInfoCard(
+                            icon: FontAwesomeIcons.exclamationTriangle,
+                            color: Colors.red,
+                            text:
+                                "عدد أيام الغياب: ${widget.teacher.daysAbsent ?? 0}",
+                            gradient: LinearGradient(
+                              colors: [
+                                Colors.red.withOpacity(0.1),
+                                Colors.red.withOpacity(0.05),
+                              ],
+                              begin: Alignment.topLeft,
+                              end: Alignment.bottomRight,
+                            ),
+                          ),
+                          SizedBox(height: 0.03.sh),
+                          _buildInfoCard(
+                            icon: FontAwesomeIcons.clock,
+                            color: ColorManagement.accentOrange,
+                            text:
+                                "عدد أيام التأخير: ${widget.teacher.lateDays ?? 0}",
+                            gradient: LinearGradient(
+                              colors: [
+                                ColorManagement.accentOrange.withOpacity(0.1),
+                                ColorManagement.accentOrange.withOpacity(0.05),
+                              ],
+                              begin: Alignment.topLeft,
+                              end: Alignment.bottomRight,
+                            ),
+                          ),
+                          SizedBox(height: 0.04.sh),
+                          _buildInfoCard(
+                            icon: FontAwesomeIcons.moneyBill1Wave,
                             color: ColorManagement.mainBlue,
-                          )),
-                      SizedBox(height: 0.02.sh),
-                      _buildInfoCard(
-                        icon: FontAwesomeIcons.exclamationTriangle,
-                        color: Colors.red,
-                        text: "عدد أيام الغياب: 7",
-                        gradient: LinearGradient(
-                          colors: [
-                            Colors.red.withOpacity(0.1),
-                            Colors.red.withOpacity(0.05),
-                          ],
-                          begin: Alignment.topLeft,
-                          end: Alignment.bottomRight,
-                        ),
-                      ),
-                      SizedBox(height: 0.03.sh),
-                      _buildInfoCard(
-                        icon: FontAwesomeIcons.clock,
-                        color: ColorManagement.accentOrange,
-                        text: "عدد أيام التأخير: 3",
-                        gradient: LinearGradient(
-                          colors: [
-                            ColorManagement.accentOrange.withOpacity(0.1),
-                            ColorManagement.accentOrange.withOpacity(0.05),
-                          ],
-                          begin: Alignment.topLeft,
-                          end: Alignment.bottomRight,
-                        ),
-                      ),
-                      SizedBox(height: 0.04.sh),
-                      _buildInfoCard(
-                        icon: FontAwesomeIcons.moneyBill1Wave,
-                        color: ColorManagement.mainBlue,
-                        text: "المرتب بعد الخصومات: 1500 جنية",
-                        gradient: LinearGradient(
-                          colors: [
-                            ColorManagement.mainBlue.withOpacity(0.1),
-                            ColorManagement.mainBlue.withOpacity(0.05),
-                          ],
-                          begin: Alignment.topLeft,
-                          end: Alignment.bottomRight,
-                        ),
-                      ),
-                    ],
+                            text: "المرتب بعد الخصومات: 1500 جنية",
+                            gradient: LinearGradient(
+                              colors: [
+                                ColorManagement.mainBlue.withOpacity(0.1),
+                                ColorManagement.mainBlue.withOpacity(0.05),
+                              ],
+                              begin: Alignment.topLeft,
+                              end: Alignment.bottomRight,
+                            ),
+                          ),
+                        ],
+                      );
+                    },
                   ),
                 ),
               ),
@@ -321,7 +313,6 @@ class _TeacherDetailsState extends State<TeacherDetails> {
             label,
             style: TextManagement.alexandria16RegularBlack.copyWith(
               color: color,
-              fontSize: 16.sp,
               fontWeight: FontWeight.w600,
             ),
           ),
@@ -339,7 +330,7 @@ class _TeacherDetailsState extends State<TeacherDetails> {
   }) {
     return Container(
       width: double.infinity,
-      padding: EdgeInsets.symmetric(horizontal: 0.05.sw, vertical: 0.03.sh),
+      padding: EdgeInsets.symmetric(horizontal: 0.05.sw, vertical: 0.02.sh),
       decoration: BoxDecoration(
         gradient: gradient,
         border: Border.all(color: color.withOpacity(0.2)),
@@ -360,8 +351,7 @@ class _TeacherDetailsState extends State<TeacherDetails> {
           Expanded(
             child: Text(
               text,
-              style: TextManagement.alexandria18RegularBlack.copyWith(
-                fontSize: 18.sp,
+              style: TextManagement.alexandria16RegularBlack.copyWith(
                 fontWeight: FontWeight.w600,
                 color: ColorManagement.black.withOpacity(0.9),
               ),
@@ -370,6 +360,61 @@ class _TeacherDetailsState extends State<TeacherDetails> {
           ),
         ],
       ),
+    );
+  }
+
+  void _showDeleteAbsencesDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(
+            'حذف الخصومات',
+            style: TextManagement.alexandria18RegularBlack,
+          ),
+          content: Text(
+            'هل تريد حذف الخصومات لشهر ${DateHelper.getArabicMonthName(teacherManagementCubit.currentMonth)} فقط أم لكل الشهور؟',
+            style: TextManagement.alexandria16RegularDarkGrey,
+          ),
+          actions: <Widget>[
+            TextButton(
+              child:
+                  Text('إلغاء', style: TextManagement.alexandria16RegularBlack),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              child: Text('حذف الشهر الحالي',
+                  style: TextManagement.alexandria16RegularWhite
+                      .copyWith(color: Colors.red)),
+              onPressed: () async {
+                await teacherManagementCubit.deleteTeacherAbsences(
+                    isAllMonths: false);
+                AppSnackBars.showSuccessSnackBar(
+                  context: context,
+                  successMsg: 'تم حذف الخصومات لهذا الشهر بنجاح',
+                );
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              child: Text('حذف كل الشهور',
+                  style: TextManagement.alexandria16RegularWhite
+                      .copyWith(color: Colors.red)),
+              onPressed: () async {
+                await teacherManagementCubit.deleteTeacherAbsences(
+                    isAllMonths: true);
+                AppSnackBars.showSuccessSnackBar(
+                  context: context,
+                  successMsg: 'تم حذف جميع الخصومات بنجاح',
+                );
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
     );
   }
 
@@ -435,15 +480,13 @@ class _TeacherDetailsState extends State<TeacherDetails> {
               child:
                   Text('إضافة', style: TextManagement.alexandria16RegularWhite),
               onPressed: () async {
-                widget.teacher.daysAbsent =
-                    int.tryParse(absenceController.text) ?? 0;
-                widget.teacher.lateDays =
-                    int.tryParse(discountController.text) ?? 0;
-
                 await teacherManagementCubit.setTeacherAbsenceAndLateDays(
-                  widget.teacher,
-                  DateHelper.getCurrentMonthAndYear(),
+                  absentDays: int.tryParse(absenceController.text) ?? 0,
+                  lateDays: int.tryParse(discountController.text) ?? 0,
+                  month: DateFormat('MM-yyyy').format(currentDate),
                 );
+                absenceController.clear();
+                discountController.clear();
                 AppSnackBars.showSuccessSnackBar(
                     // ignore: use_build_context_synchronously
                     context: context,

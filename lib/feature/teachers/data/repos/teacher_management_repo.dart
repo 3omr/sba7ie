@@ -52,10 +52,11 @@ class TeacherManagementRepo {
     }
   }
 
-  // Deletes a specific absence record by its ID
-  Future<Result<int>> deleteAbsenceRecord(int absenceId) async {
+  Future<Result<int>> deleteTeacherAbsences(
+      {required int teacherId, String? month}) async {
     try {
-      int result = await _db.deleteAbsenceRecord(absenceId);
+      int result =
+          await _db.deleteTeacherAbsences(teacherId: teacherId, month: month);
       return Success(result);
     } catch (e) {
       return Failure(e.toString());

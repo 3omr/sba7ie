@@ -149,13 +149,29 @@ class Db {
     return res;
   }
 
-  Future<int> deleteAbsenceRecord(int absenceId) async {
+  Future<int> deleteTeacherAbsences({
+    required int teacherId,
+    String? month, // Make month optional
+  }) async {
     Database? data = await db;
-    return await data!.delete(
-      'absences',
-      where: 'id = ?',
-      whereArgs: [absenceId],
-    );
+    int rowsDeleted = 0;
+
+    if (month != null && month.isNotEmpty) {
+      // Delete for a specific month
+      rowsDeleted = await data!.delete(
+        'absences',
+        where: 'teacherId = ? AND month = ?',
+        whereArgs: [teacherId, month],
+      );
+    } else {
+      // Delete all absences for the teacher
+      rowsDeleted = await data!.delete(
+        'absences',
+        where: 'teacherId = ?',
+        whereArgs: [teacherId],
+      );
+    }
+    return rowsDeleted;
   }
 
   Future<List<Map<String, dynamic>>> getTeachersWithAbsencesForMonth(
