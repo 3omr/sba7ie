@@ -81,8 +81,7 @@ class TeachersScreen extends StatelessWidget {
           context.pushNamed(Routers.addTeacher,
               extra: context.read<TeacherCubit>());
         },
-        backgroundColor: ColorManagement.mainBlue,
-        child: const Icon(Icons.add, color: Colors.white),
+        child: const Icon(Icons.add),
       ),
     );
   }

@@ -1,7 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tasneem_sba7ie/feature/students/data/models/student_model.dart';
 import 'package:tasneem_sba7ie/feature/students/data/repos/student_repo.dart';
-import 'package:tasneem_sba7ie/feature/students/logic/students_state.dart';
+import 'package:tasneem_sba7ie/feature/students/logic/students_cubit/students_state.dart';
 import 'package:tasneem_sba7ie/feature/teachers/data/models/teacher_model.dart';
 import 'package:tasneem_sba7ie/feature/teachers/data/repos/teacher_repo.dart';
 

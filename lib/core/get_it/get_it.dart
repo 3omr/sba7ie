@@ -1,6 +1,8 @@
 import 'package:get_it/get_it.dart';
 import 'package:tasneem_sba7ie/feature/students/data/repos/student_repo.dart';
-import 'package:tasneem_sba7ie/feature/students/logic/students_cubit.dart';
+import 'package:tasneem_sba7ie/feature/students/data/repos/student_subscription_repo.dart';
+import 'package:tasneem_sba7ie/feature/students/logic/student_subscription_cubit/student_subscription_cubit.dart';
+import 'package:tasneem_sba7ie/feature/students/logic/students_cubit/students_cubit.dart';
 import 'package:tasneem_sba7ie/feature/teachers/data/repos/teacher_management_repo.dart';
 import 'package:tasneem_sba7ie/feature/teachers/data/repos/teacher_repo.dart';
 import 'package:tasneem_sba7ie/feature/teachers/logic/teacher_cubit/teacher_cubit.dart';
@@ -31,4 +33,10 @@ void getItSetup() {
   getIt.registerLazySingleton<StudentRepo>(() => StudentRepo(getIt<Db>()));
   getIt.registerFactory<StudentsCubit>(
       () => StudentsCubit(getIt<StudentRepo>(), getIt<TeacherRepo>()));
+
+  getIt.registerLazySingleton<StudentSubscriptionRepo>(
+      () => StudentSubscriptionRepo(getIt<Db>()));
+
+  getIt.registerFactory<StudentSubscriptionCubit>(
+      () => StudentSubscriptionCubit(getIt<StudentSubscriptionRepo>()));
 }

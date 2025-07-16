@@ -35,7 +35,7 @@ class TeacherManagementRepo {
   Future<Result<Teacher>> getTeacherAbsenceAnddiscounts(
       int teacherId, String month) async {
     try {
-      var resp = await _db.getTeacherAbsenceAnddiscounts(teacherId, month);
+      var resp = await _db.getTeacherAbsenceAndDiscounts(teacherId, month);
       return Success(Teacher.absenceFromJson(resp));
     } catch (e) {
       return Failure(e.toString());

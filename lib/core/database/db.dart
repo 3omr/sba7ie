@@ -1,5 +1,6 @@
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
+import 'package:tasneem_sba7ie/core/database/tabels_name.dart';
 
 class Db {
   Database? _db;
@@ -107,6 +108,58 @@ class Db {
     return res;
   }
 
+  // --------------- subscriptions CRUD -------------------------
+  Future<int> setStudentSubscription(
+      int studentId, int money, String date) async {
+    Database? data = await db;
+
+    return await data!.insert(
+      subscriptionsTable,
+      {'idStudent': studentId, 'money': money, 'date': date},
+    );
+  }
+
+  Future<List<Map>> getStudentSubscriptionsById(int studentId) async {
+    Database? data = await db;
+    List<Map<String, Object?>> res = await data!.query(
+      'subscriptions',
+      where: 'idStudent = ?',
+      whereArgs: [studentId],
+      orderBy: 'date DESC',
+    );
+    return res;
+  }
+
+  Future<List<Map>> getAllStudentSubscriptions() async {
+    Database? data = await db;
+    List<Map<String, Object?>> res = await data!.query(
+      'subscriptions',
+      orderBy: 'date DESC',
+    );
+    return res;
+  }
+
+  Future<int> deleteAllStudentSubscriptions(int studentId) async {
+    Database? data = await db;
+    int res = await data!.delete(
+      'subscriptions',
+      where: 'idStudent = ?',
+      whereArgs: [studentId],
+    );
+    return res;
+  }
+
+  Future<int> deleteStudentSubscriptionByDate(
+      int studentId, String date) async {
+    Database? data = await db;
+    int res = await data!.delete(
+      'subscriptions',
+      where: 'idStudent = ? AND date = ?',
+      whereArgs: [studentId, date],
+    );
+    return res;
+  }
+
   //--------------- absences CRUD -------------------------
 
   Future<int> setTeacherAbsence(
@@ -193,7 +246,7 @@ class Db {
     return res.map((e) => e.map((key, value) => MapEntry(key, value))).toList();
   }
 
-  Future<Map<String, int>> getTeacherAbsenceAnddiscounts(
+  Future<Map<String, int>> getTeacherAbsenceAndDiscounts(
       int teacherId, String month) async {
     Database? data = await db;
     List<Map<String, Object?>> res = await data!.query(

@@ -7,8 +7,8 @@ import 'package:tasneem_sba7ie/core/theme/color_management.dart';
 import 'package:tasneem_sba7ie/core/widgets/container_background.dart';
 import 'package:tasneem_sba7ie/core/widgets/Error_state_widget.dart';
 import 'package:tasneem_sba7ie/core/widgets/empty_state_widget.dart';
-import 'package:tasneem_sba7ie/feature/students/logic/students_cubit.dart';
-import 'package:tasneem_sba7ie/feature/students/logic/students_state.dart';
+import 'package:tasneem_sba7ie/feature/students/logic/students_cubit/students_cubit.dart';
+import 'package:tasneem_sba7ie/feature/students/logic/students_cubit/students_state.dart';
 import 'package:tasneem_sba7ie/feature/students/data/models/student_model.dart';
 import 'package:tasneem_sba7ie/feature/students/screens/widgets/student_card.dart';
 
@@ -82,8 +82,7 @@ class StudentsScreen extends StatelessWidget {
             context.read<StudentsCubit>().teachers
           ]);
         },
-        backgroundColor: ColorManagement.mainBlue,
-        child: const Icon(Icons.add, color: Colors.white),
+        child: const Icon(Icons.add),
       ),
     );
   }

@@ -36,6 +36,13 @@ class ThemeManagement {
         filled: true,
         fillColor: Colors.transparent,
       ),
+      floatingActionButtonTheme: FloatingActionButtonThemeData(
+        backgroundColor: ColorManagement.mainBlue,
+        foregroundColor: ColorManagement.white,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12.r),
+        ),
+      ),
       elevatedButtonTheme: ElevatedButtonThemeData(
           style: ElevatedButton.styleFrom(
         backgroundColor: ColorManagement.mainBlue,

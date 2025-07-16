@@ -1,45 +1,61 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:tasneem_sba7ie/core/theme/color_management.dart';
 import 'package:tasneem_sba7ie/core/theme/text_management.dart';
+import 'package:tasneem_sba7ie/core/widgets/Error_state_widget.dart';
 import 'package:tasneem_sba7ie/core/widgets/container_shadow.dart';
+import 'package:tasneem_sba7ie/core/widgets/delete_dialog.dart';
+import 'package:tasneem_sba7ie/core/widgets/empty_state_widget.dart';
 import 'package:tasneem_sba7ie/feature/students/data/models/student_model.dart';
+import 'package:tasneem_sba7ie/feature/students/logic/student_subscription_cubit/student_subscription_cubit.dart';
+import 'package:tasneem_sba7ie/feature/students/screens/widgets/student_dialogs.dart';
+import 'package:tasneem_sba7ie/feature/students/screens/widgets/student_profile_section.dart';
+import 'package:tasneem_sba7ie/feature/students/screens/widgets/subscription_info_section.dart';
 
-class StudentSubscriptionScreen extends StatelessWidget {
+class StudentSubscriptionScreen extends StatefulWidget {
   final Student student;
-  final int subscription;
-  final int paid;
-  final int remaining;
-  final List<Map<String, dynamic>> payments; // [{money, date, id}]
-  final VoidCallback? onAddPayment;
-  final VoidCallback? onSendMsg;
-  final Function(int id)? onDeletePayment;
+  final String teacherName;
 
   const StudentSubscriptionScreen({
     super.key,
     required this.student,
-    required this.subscription,
-    required this.paid,
-    required this.remaining,
-    required this.payments,
-    this.onAddPayment,
-    this.onSendMsg,
-    this.onDeletePayment,
+    required this.teacherName,
   });
+
+  @override
+  State<StudentSubscriptionScreen> createState() =>
+      _StudentSubscriptionScreenState();
+}
+
+class _StudentSubscriptionScreenState extends State<StudentSubscriptionScreen> {
+  late final StudentSubscriptionCubit _studentSubscriptionCubit;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _studentSubscriptionCubit = context.read<StudentSubscriptionCubit>();
+
+    _studentSubscriptionCubit.student = widget.student;
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          student.name ?? '',
-          style: TextManagement.alexandria20RegularBlack.copyWith(
-            color: ColorManagement.mainBlue,
-            fontWeight: FontWeight.w800,
-          ),
+        title: const Text(
+          'مدفوعات الطالب',
         ),
-        centerTitle: true,
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          StudentDialogs.showAddAbsenceDiscountDialog(
+            context: context,
+            studentSubscriptionCubit: _studentSubscriptionCubit,
+          );
+        },
+        child: const Icon(Icons.add),
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -48,90 +64,15 @@ class StudentSubscriptionScreen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // --- Profile Section ---
-              Container(
-                padding: EdgeInsets.all(0.04.sw),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(16.r),
-                  boxShadow: [
-                    BoxShadow(
-                      color: ColorManagement.mainBlue.withOpacity(0.1),
-                      blurRadius: 12,
-                      offset: const Offset(0, 4),
-                    ),
-                  ],
-                ),
-                child: Row(
-                  children: [
-                    CircleAvatar(
-                      radius: 0.12.sw,
-                      backgroundColor:
-                          ColorManagement.mainBlue.withOpacity(0.15),
-                      child: FaIcon(
-                        FontAwesomeIcons.userGraduate,
-                        size: 0.14.sw,
-                        color: ColorManagement.mainBlue,
-                      ),
-                    ),
-                    SizedBox(width: 0.06.sw),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            student.name ?? '',
-                            style: TextManagement.alexandria20RegularBlack
-                                .copyWith(
-                              color: ColorManagement.mainBlue,
-                              fontWeight: FontWeight.w800,
-                            ),
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                          SizedBox(height: 0.01.sh),
-                          Text(
-                            "رقم الهاتف: ${student.phoneNumber ?? ''}",
-                            style: TextManagement.alexandria16RegularDarkGrey
-                                .copyWith(
-                              color: ColorManagement.darkGrey.withOpacity(0.8),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
+              StudentProfileSection(
+                student: _studentSubscriptionCubit.student,
+                teacherName: widget.teacherName,
               ),
               SizedBox(height: 0.04.sh),
 
               // --- Subscription Info Section ---
-              Container(
-                padding: EdgeInsets.symmetric(
-                    horizontal: 0.04.sw, vertical: 0.02.sh),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(16.r),
-                  boxShadow: [
-                    BoxShadow(
-                      color: ColorManagement.mainBlue.withOpacity(0.1),
-                      blurRadius: 8,
-                      offset: const Offset(0, 2),
-                    ),
-                  ],
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    _buildInfoColumn('الاشتراك', subscription.toString()),
-                    _buildInfoColumn('المدفوع', paid.toString()),
-                    _buildInfoColumn('الباقي', remaining.toString()),
-                    IconButton(
-                      onPressed: onSendMsg,
-                      icon: const Icon(Icons.textsms_outlined),
-                      color: ColorManagement.mainBlue,
-                    ),
-                  ],
-                ),
-              ),
+              SubscriptionInfoSection(
+                  studentSubscriptionCubit: _studentSubscriptionCubit),
               SizedBox(height: 0.04.sh),
 
               // --- Payments Title ---
@@ -144,34 +85,9 @@ class StudentSubscriptionScreen extends StatelessWidget {
               ),
               SizedBox(height: 0.02.sh),
 
-              // --- Add Payment Section ---
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  SizedBox(
-                    width: 0.4.sw,
-                    child: TextFormField(
-                      keyboardType: TextInputType.number,
-                      decoration: const InputDecoration(
-                        labelText: 'القسط',
-                        border: OutlineInputBorder(),
-                      ),
-                    ),
-                  ),
-                  IconButton(
-                    onPressed: onAddPayment,
-                    icon: Icon(
-                      Icons.add_box_outlined,
-                      color: ColorManagement.mainBlue,
-                      size: 0.09.sw,
-                    ),
-                  ),
-                ],
-              ),
-              SizedBox(height: 0.03.sh),
-
               // --- Payments List Header ---
               Container(
+                padding: EdgeInsets.symmetric(vertical: 0.01.sh),
                 decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(12.r),
@@ -179,40 +95,45 @@ class StudentSubscriptionScreen extends StatelessWidget {
                       color: ColorManagement.mainBlue.withOpacity(0.2)),
                 ),
                 child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    _buildHeaderCell('م', 0.15),
+                    _buildHeaderCell('م', 0.1),
                     _buildHeaderCell('المبلغ', 0.25),
                     _buildHeaderCell('التاريخ', 0.32),
-                    _buildHeaderCell('حذف', 0.25),
+                    _buildHeaderCell('حذف', 0.2),
                   ],
                 ),
               ),
               SizedBox(height: 0.01.sh),
 
               // --- Payments List ---
-              ListView.builder(
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                itemCount: payments.length,
-                itemBuilder: (context, index) {
-                  final payment = payments[index];
-                  return ContainerShadow(
-                    child: Row(
-                      children: [
-                        _buildCell((index + 1).toString(), 0.15),
-                        _buildCell(payment['money'].toString(), 0.25),
-                        _buildCell(payment['date'].toString(), 0.32),
-                        SizedBox(
-                          width: 0.25.sw,
-                          child: IconButton(
-                            icon: const Icon(Icons.delete, color: Colors.red),
-                            onPressed: () =>
-                                onDeletePayment?.call(payment['id']),
-                          ),
-                        ),
-                      ],
-                    ),
-                  );
+              BlocBuilder<StudentSubscriptionCubit, StudentSubscriptionState>(
+                builder: (context, state) {
+                  if (state is StudentSubscriptionLoading) {
+                    return const Center(child: CircularProgressIndicator());
+                  }
+                  if (state is StudentSubscriptionError) {
+                    return ErrorStateWidget(
+                      text: state.error,
+                      reloadFunction: () {
+                        _studentSubscriptionCubit.getStudentSubscriptionsById();
+                      },
+                    );
+                  }
+                  if (state is StudentSubscriptionEmpty) {
+                    return EmptyStateWidget(
+                      text: 'لا توجد مدفوعات للطالب',
+                      addButtonText: 'إضافة دفعة',
+                      onPressed: () {
+                        StudentDialogs.showAddAbsenceDiscountDialog(
+                          context: context,
+                          studentSubscriptionCubit: _studentSubscriptionCubit,
+                        );
+                      },
+                    );
+                  }
+                  return _paymentList();
                 },
               ),
             ],
@@ -222,13 +143,51 @@ class StudentSubscriptionScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildInfoColumn(String label, String value) {
-    return Column(
-      children: [
-        Text(label, style: TextManagement.alexandria16BoldMainBlue),
-        SizedBox(height: 4),
-        Text(value, style: TextManagement.alexandria16RegularBlack),
-      ],
+  ListView _paymentList() {
+    return ListView.builder(
+      shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(),
+      itemCount: _studentSubscriptionCubit.subscriptions.length,
+      itemBuilder: (context, index) {
+        final payment = _studentSubscriptionCubit.subscriptions[index];
+        return Padding(
+          padding: EdgeInsets.symmetric(vertical: 0.01.sh),
+          child: ContainerShadow(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                _buildCell((index + 1).toString(), 0.1),
+                _buildCell(payment.money.toString(), 0.25),
+                _buildCell(payment.date.toString(), 0.32),
+                SizedBox(
+                  width: 0.2.sw,
+                  child: IconButton(
+                    icon: const Icon(Icons.delete, color: Colors.red),
+                    onPressed: () {
+                      showDialog(
+                        context: context,
+                        builder: (context) {
+                          return DeleteDialog(
+                            title: 'تأكيد الحذف',
+                            msg: 'هل تريد حذف هذه الدفعة؟',
+                            successMsg: 'تم حذف الدفعة بنجاح',
+                            onDelete: () async {
+                              await _studentSubscriptionCubit
+                                  .deleteStudentSubscriptionByDate(
+                                      payment.date ?? '');
+                            },
+                          );
+                        },
+                      );
+                    },
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
     );
   }
 

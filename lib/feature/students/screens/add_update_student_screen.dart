@@ -6,8 +6,8 @@ import 'package:tasneem_sba7ie/core/theme/text_management.dart';
 import 'package:tasneem_sba7ie/core/widgets/container_background.dart';
 import 'package:tasneem_sba7ie/core/widgets/container_shadow.dart';
 import 'package:tasneem_sba7ie/feature/students/data/models/student_model.dart';
-import 'package:tasneem_sba7ie/feature/students/logic/students_cubit.dart';
-import 'package:tasneem_sba7ie/feature/students/logic/students_state.dart';
+import 'package:tasneem_sba7ie/feature/students/logic/students_cubit/students_cubit.dart';
+import 'package:tasneem_sba7ie/feature/students/logic/students_cubit/students_state.dart';
 
 class AddUpdateStudentScreen extends StatefulWidget {
   final dynamic student; // Replace with Student? if you have the model

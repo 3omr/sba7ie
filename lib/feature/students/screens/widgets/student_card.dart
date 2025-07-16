@@ -7,7 +7,7 @@ import 'package:tasneem_sba7ie/core/theme/color_management.dart';
 import 'package:tasneem_sba7ie/core/theme/text_management.dart';
 import 'package:tasneem_sba7ie/core/widgets/delete_dialog.dart';
 import 'package:tasneem_sba7ie/feature/students/data/models/student_model.dart';
-import 'package:tasneem_sba7ie/feature/students/logic/students_cubit.dart';
+import 'package:tasneem_sba7ie/feature/students/logic/students_cubit/students_cubit.dart';
 
 class StudentCard extends StatelessWidget {
   final Student student;
@@ -28,14 +28,8 @@ class StudentCard extends StatelessWidget {
       child: InkWell(
         onTap: () {
           context.pushNamed(Routers.studentSubscription, extra: [
-            studentsCubit,
             student,
-            200,
-            150,
-            50,
-            [
-              {'money': 100, 'date': '2023-10-01', 'id': 1}
-            ],
+            studentsCubit.getTeacherNameById(student.idTeacher)
           ]);
         },
         borderRadius: BorderRadius.circular(12.r),

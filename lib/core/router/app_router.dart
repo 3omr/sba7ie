@@ -5,7 +5,8 @@ import 'package:tasneem_sba7ie/core/get_it/get_it.dart';
 import 'package:tasneem_sba7ie/core/router/router.dart';
 import 'package:tasneem_sba7ie/feature/home/screens/home_screen.dart';
 import 'package:tasneem_sba7ie/feature/students/data/models/student_model.dart';
-import 'package:tasneem_sba7ie/feature/students/logic/students_cubit.dart';
+import 'package:tasneem_sba7ie/feature/students/logic/student_subscription_cubit/student_subscription_cubit.dart';
+import 'package:tasneem_sba7ie/feature/students/logic/students_cubit/students_cubit.dart';
 import 'package:tasneem_sba7ie/feature/students/screens/add_update_student_screen.dart';
 import 'package:tasneem_sba7ie/feature/students/screens/student_subscription_screen.dart';
 import 'package:tasneem_sba7ie/feature/students/screens/students_screen.dart';
@@ -116,14 +117,11 @@ class AppRouter {
         path: Routers.studentSubscription,
         builder: (BuildContext context, GoRouterState state) {
           List extra = state.extra as List;
-          return BlocProvider.value(
-            value: extra[0] as StudentsCubit,
+          return BlocProvider(
+            create: (context) => getIt<StudentSubscriptionCubit>(),
             child: StudentSubscriptionScreen(
-              student: extra[1] as Student,
-              subscription: extra[2] as int,
-              paid: extra[3] as int,
-              remaining: extra[4] as int,
-              payments: extra[5] as List<Map<String, dynamic>>,
+              student: extra[0] as Student,
+              teacherName: extra[1] as String,
             ),
           );
         },
