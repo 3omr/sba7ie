@@ -11,7 +11,6 @@ import 'package:tasneem_sba7ie/feature/teachers/data/models/teacher_model.dart';
 import 'package:tasneem_sba7ie/feature/teachers/logic/teacher_cubit/teacher_cubit.dart';
 
 class AddUpdateTeacherScreen extends StatefulWidget {
-  // Make the teacher parameter nullable to indicate add or update mode
   final Teacher? teacher;
 
   const AddUpdateTeacherScreen({super.key, this.teacher});
@@ -169,7 +168,6 @@ class _AddUpdateTeacherScreenState extends State<AddUpdateTeacherScreen> {
                                 ),
                               )
                             : Text(
-                                // Dynamically change button text
                                 _isUpdating ? 'تعديل' : 'إضافة',
                                 style: TextManagement.alexandria16RegularWhite,
                               ),

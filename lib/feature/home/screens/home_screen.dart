@@ -169,7 +169,9 @@ class HomeScreen extends StatelessWidget {
                   HomeScreenSection(
                     icon: FontAwesomeIcons.child,
                     text: "الطلاب",
-                    onTap: () {}, // Add navigation logic here
+                    onTap: () {
+                      context.pushNamed(Routers.students);
+                    },
                   ),
                   HomeScreenSection(
                     icon: FontAwesomeIcons.moneyBill,
@@ -190,4 +192,3 @@ class HomeScreen extends StatelessWidget {
     );
   }
 }
-

@@ -4,6 +4,9 @@ import 'package:go_router/go_router.dart';
 import 'package:tasneem_sba7ie/core/get_it/get_it.dart';
 import 'package:tasneem_sba7ie/core/router/router.dart';
 import 'package:tasneem_sba7ie/feature/home/screens/home_screen.dart';
+import 'package:tasneem_sba7ie/feature/students/logic/students_cubit.dart';
+import 'package:tasneem_sba7ie/feature/students/screens/add_update_student_screen.dart';
+import 'package:tasneem_sba7ie/feature/students/screens/students_screen.dart';
 import 'package:tasneem_sba7ie/feature/teachers/data/models/teacher_model.dart';
 import 'package:tasneem_sba7ie/feature/teachers/logic/teacher_cubit/teacher_cubit.dart';
 import 'package:tasneem_sba7ie/feature/teachers/logic/teacher_management_cubit/teacher_management_cubit.dart';
@@ -63,6 +66,31 @@ class AppRouter {
             create: (context) => getIt<TeacherManagementCubit>(),
             child: TeacherDetails(
               teacher: extra[1] as Teacher,
+            ),
+          );
+        },
+      ),
+
+      // Students Routes
+      GoRoute(
+        name: Routers.students,
+        path: Routers.students,
+        builder: (BuildContext context, GoRouterState state) {
+          return BlocProvider(
+            create: (context) => getIt<StudentsCubit>(),
+            child: const StudentsScreen(),
+          );
+        },
+      ),
+      GoRoute(
+        name: Routers.addStudent,
+        path: Routers.addStudent,
+        builder: (BuildContext context, GoRouterState state) {
+          List extra = state.extra as List;
+          return BlocProvider.value(
+            value: extra[0] as StudentsCubit,
+            child: AddUpdateStudentScreen(
+              teachersList: extra[1] as List<Teacher>,
             ),
           );
         },
