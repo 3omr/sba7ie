@@ -10,7 +10,7 @@ import 'package:tasneem_sba7ie/core/widgets/empty_state_widget.dart';
 import 'package:tasneem_sba7ie/feature/students/logic/students_cubit.dart';
 import 'package:tasneem_sba7ie/feature/students/logic/students_state.dart';
 import 'package:tasneem_sba7ie/feature/students/data/models/student_model.dart';
-import 'package:tasneem_sba7ie/widgets/list_tile_card.dart';
+import 'package:tasneem_sba7ie/feature/students/screens/widgets/student_card.dart';
 
 class StudentsScreen extends StatelessWidget {
   const StudentsScreen({super.key});
@@ -57,18 +57,11 @@ class StudentsScreen extends StatelessWidget {
                     delegate: SliverChildBuilderDelegate(
                       (context, index) {
                         final student = students[index];
-                        return ListTileCard(
-                          number: index + 1,
-                          title: student.name ?? '',
-                          subTitle: 'رقم الهاتف: ${student.phoneNumber ?? ''}',
-                          onEdite: () {
-                            // TODO: Edit student
-                          },
-                          onDelete: () {
-                            context
-                                .read<StudentsCubit>()
-                                .deleteStudent(student);
-                          },
+                        final studentsCubit = context.read<StudentsCubit>();
+                        return StudentCard(
+                          student: student,
+                          index: index,
+                          studentsCubit: studentsCubit,
                         );
                       },
                       childCount: students.length,

@@ -28,6 +28,12 @@ class StudentsCubit extends Cubit<StudentsState> {
         failure: (e) => emit(StudentsError(e.toString())));
   }
 
+  String getTeacherNameById(int? id) {
+    if (id == null) return '';
+    final teacher = teachers.firstWhere((teacher) => teacher.id == id, orElse: () => Teacher());
+    return teacher.name ?? '';
+  }
+
   Future<void> getStudents() async {
     emit(StudentsLoading());
 

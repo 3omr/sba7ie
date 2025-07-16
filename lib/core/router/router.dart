@@ -10,4 +10,6 @@ class Routers {
   // students
   static const String students = "/students";
   static const String addStudent = "/addStudent";
+  static const String updateStudent = "/updateStudent";
+  static const String studentSubscription = "/studentSubscription";
 }
