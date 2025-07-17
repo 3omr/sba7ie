@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:tasneem_sba7ie/core/helper/url_launcher_helper.dart';
+import 'package:tasneem_sba7ie/core/helper/write_message_helper.dart';
 import 'package:tasneem_sba7ie/core/theme/color_management.dart';
 import 'package:tasneem_sba7ie/core/theme/text_management.dart';
 import 'package:tasneem_sba7ie/feature/students/logic/student_subscription_cubit/student_subscription_cubit.dart';
@@ -39,7 +41,12 @@ class SubscriptionInfoSection extends StatelessWidget {
                   'الباقي', studentSubscriptionCubit.getRemaining().toString()),
               IconButton(
                 onPressed: () {
-                  // Handle chat action
+                  UrlLauncherHelper.sendMessageToPhoneWhatsApp(
+                      studentSubscriptionCubit.student.phoneNumber ?? '',
+                      WriteMessageHelper.writeMessageToPhoneToGetSubscription(
+                          studentSubscriptionCubit.student.subscription ?? 0,
+                          studentSubscriptionCubit.getPaid().toInt(),
+                          studentSubscriptionCubit.getRemaining().toInt()));
                 },
                 icon: const FaIcon(FontAwesomeIcons.message),
                 color: ColorManagement.mainBlue,

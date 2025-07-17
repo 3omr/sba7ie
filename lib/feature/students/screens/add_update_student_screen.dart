@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tasneem_sba7ie/core/theme/color_management.dart';
 import 'package:tasneem_sba7ie/core/theme/text_management.dart';
+import 'package:tasneem_sba7ie/core/widgets/app_snack_bars.dart';
 import 'package:tasneem_sba7ie/core/widgets/container_background.dart';
 import 'package:tasneem_sba7ie/core/widgets/container_shadow.dart';
 import 'package:tasneem_sba7ie/feature/students/data/models/student_model.dart';
@@ -192,17 +193,15 @@ class _AddUpdateStudentScreenState extends State<AddUpdateStudentScreen> {
                   BlocConsumer<StudentsCubit, dynamic>(
                     listener: (context, state) {
                       if (state is StudentsAdded) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                              content: Text(_isUpdating
-                                  ? 'تم تعديل الطالب بنجاح'
-                                  : 'تم إضافة الطالب بنجاح')),
-                        );
+                        AppSnackBars.showSuccessSnackBar(
+                            context: context,
+                            successMsg: _isUpdating
+                                ? 'تم تعديل الطالب بنجاح'
+                                : 'تم إضافة الطالب بنجاح');
                         Navigator.of(context).pop();
                       } else if (state is StudentsError) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text(state.message)),
-                        );
+                        AppSnackBars.showErrorSnackBar(
+                            context: context, errorMsg: state.message);
                       }
                     },
                     builder: (context, state) {
