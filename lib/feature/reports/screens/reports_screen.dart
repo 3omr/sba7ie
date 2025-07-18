@@ -2,13 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:go_router/go_router.dart';
+import 'package:tasneem_sba7ie/core/router/router.dart';
 import 'package:tasneem_sba7ie/core/theme/color_management.dart';
 import 'package:tasneem_sba7ie/core/theme/text_management.dart';
 import 'package:tasneem_sba7ie/core/widgets/container_shadow.dart';
-import 'package:tasneem_sba7ie/feature/reports/logic/cubit/reports_cubit.dart';
-import 'package:tasneem_sba7ie/feature/reports/logic/cubit/reports_state.dart';
+import 'package:tasneem_sba7ie/feature/reports/logic/reports_cubit/reports_cubit.dart';
+import 'package:tasneem_sba7ie/feature/reports/logic/reports_cubit/reports_state.dart';
 import 'package:tasneem_sba7ie/feature/reports/screens/pie_chart_widget.dart';
-import 'package:tasneem_sba7ie/feature/reports/screens/student_reports_screen.dart';
 
 class ReportsScreen extends StatelessWidget {
   const ReportsScreen({super.key});
@@ -162,12 +163,7 @@ class ReportsScreen extends StatelessWidget {
                         label: 'تقارير الطلبة',
                         color: ColorManagement.mainBlue,
                         onTap: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) =>
-                                    const StudentReportsScreen(),
-                              ));
+                          context.pushNamed(Routers.studentReports);
                         },
                       ),
                       _buildActionButton(

@@ -13,6 +13,8 @@ Future<void> main() async {
   runApp(const MyApp());
 }
 
+// ظبط لو مسحت المعلم يتمسح الطلاب بتوعه او اي حاجة تانية
+
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 

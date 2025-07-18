@@ -4,6 +4,7 @@ class StudentReport {
   final int subscription;
   final int totalPaid;
   final int remaining;
+  final int teacherId;
 
   StudentReport({
     required this.id,
@@ -11,6 +12,7 @@ class StudentReport {
     required this.subscription,
     required this.totalPaid,
     required this.remaining,
+    required this.teacherId,
   });
 
   factory StudentReport.fromJson(Map<String, dynamic> json) {
@@ -18,8 +20,9 @@ class StudentReport {
       id: json['id'],
       name: json['name'],
       subscription: json['subscription'],
-      totalPaid: json['total_paid'],
+      totalPaid: json['totalPaid'],
       remaining: json['remaining'],
+      teacherId: json['idTeacher'],
     );
   }
 
@@ -28,8 +31,9 @@ class StudentReport {
       'id': id,
       'name': name,
       'subscription': subscription,
-      'total_paid': totalPaid,
+      'totalPaid': totalPaid,
       'remaining': remaining,
+      'idTeacher': teacherId,
     };
   }
 }
