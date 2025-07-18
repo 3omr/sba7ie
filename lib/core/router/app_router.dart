@@ -4,6 +4,8 @@ import 'package:go_router/go_router.dart';
 import 'package:tasneem_sba7ie/core/get_it/get_it.dart';
 import 'package:tasneem_sba7ie/core/router/router.dart';
 import 'package:tasneem_sba7ie/feature/home/screens/home_screen.dart';
+import 'package:tasneem_sba7ie/feature/reports/logic/cubit/reports_cubit.dart';
+import 'package:tasneem_sba7ie/feature/reports/screens/reports_screen.dart';
 import 'package:tasneem_sba7ie/feature/students/data/models/student_model.dart';
 import 'package:tasneem_sba7ie/feature/students/logic/student_subscription_cubit/student_subscription_cubit.dart';
 import 'package:tasneem_sba7ie/feature/students/logic/students_cubit/students_cubit.dart';
@@ -123,6 +125,17 @@ class AppRouter {
               student: extra[0] as Student,
               teacherName: extra[1] as String,
             ),
+          );
+        },
+      ),
+      // Reports Routes
+      GoRoute(
+        name: Routers.reports,
+        path: Routers.reports,
+        builder: (BuildContext context, GoRouterState state) {
+          return BlocProvider(
+            create: (context) => getIt<ReportsCubit>(),
+            child: const ReportsScreen(),
           );
         },
       ),

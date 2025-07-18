@@ -263,4 +263,43 @@ class Db {
     }
     return {'daysAbsent': 0, 'discounts': 0};
   }
+
+  //--------------- Financial Summary -------------------------
+
+  Future<Map<String, int>> getFinancialSummary() async {
+    Database? data = await db;
+
+    // Get total subscription from students table
+    List<Map<String, dynamic>> studentSubscriptionResult = await data!.rawQuery(
+      'SELECT SUM(subscription) AS totalSubscription FROM students',
+    );
+    double totalStudentSubscription = studentSubscriptionResult.isNotEmpty
+        ? (studentSubscriptionResult.first['totalSubscription'] as num?)
+                ?.toDouble() ??
+            0.0
+        : 0.0;
+
+    // Get total money from subscriptions table
+    List<Map<String, dynamic>> moneySubscriptionResult = await data.rawQuery(
+      'SELECT SUM(money) AS totalMoney FROM subscriptions',
+    );
+    double totalMoneyFromSubscriptions = moneySubscriptionResult.isNotEmpty
+        ? (moneySubscriptionResult.first['totalMoney'] as num?)?.toDouble() ??
+            0.0
+        : 0.0;
+
+    // Calculate the remain (unpaid subscriptions)
+    double remain = totalStudentSubscription - totalMoneyFromSubscriptions;
+
+    // Ensure remain is non-negative for pie chart
+    if (remain < 0) {
+      remain = 0.0; // Prevent negative values for visualization
+    }
+
+    return {
+      'totalStudentSubscription': totalStudentSubscription.toInt(),
+      'totalMoneyFromSubscriptions': totalMoneyFromSubscriptions.toInt(),
+      'remain': remain.toInt(),
+    };
+  }
 }

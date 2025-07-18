@@ -181,7 +181,9 @@ class HomeScreen extends StatelessWidget {
                   HomeScreenSection(
                     icon: FontAwesomeIcons.book,
                     text: "التقارير",
-                    onTap: () {}, // Add navigation logic here
+                    onTap: () {
+                      context.pushNamed(Routers.reports);
+                    },
                   ),
                 ],
               ),
