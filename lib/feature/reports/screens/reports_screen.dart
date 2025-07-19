@@ -9,7 +9,7 @@ import 'package:tasneem_sba7ie/core/theme/text_management.dart';
 import 'package:tasneem_sba7ie/core/widgets/container_shadow.dart';
 import 'package:tasneem_sba7ie/feature/reports/logic/reports_cubit/reports_cubit.dart';
 import 'package:tasneem_sba7ie/feature/reports/logic/reports_cubit/reports_state.dart';
-import 'package:tasneem_sba7ie/feature/reports/screens/pie_chart_widget.dart';
+import 'package:tasneem_sba7ie/feature/reports/screens/widgets/pie_chart_widget.dart';
 
 class ReportsScreen extends StatelessWidget {
   const ReportsScreen({super.key});

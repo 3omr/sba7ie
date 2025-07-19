@@ -16,8 +16,16 @@ class StudentReportsCubit extends Cubit<StudentReportsState> {
   final TeacherRepo _teacherRepo;
 
   List<Teacher> teachers = [];
+  int? _selectedTeacherId;
   List<StudentReport> studentReports = [];
   List<StudentPayment> studentPayments = [];
+
+  int? get selectedTeacherId => _selectedTeacherId;
+
+  set selectedTeacherId(int? value) {
+    _selectedTeacherId = value;
+    getStudentReportsByTeacherID(_selectedTeacherId ?? 0);
+  }
 
   Future<void> getTeachers() async {
     emit(StudentReportsLoading());

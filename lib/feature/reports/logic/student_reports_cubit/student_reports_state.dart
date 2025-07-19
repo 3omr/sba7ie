@@ -26,3 +26,5 @@ final class StudentReportsError extends StudentReportsState {
 }
 
 final class StudentReportsEmpty extends StudentReportsState {}
+
+enum StudentReportsType { teacher, dateRange }

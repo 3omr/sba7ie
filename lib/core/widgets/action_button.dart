@@ -3,13 +3,13 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:tasneem_sba7ie/core/theme/text_management.dart';
 
-class TeacherActionButton extends StatelessWidget {
+class ActionButton extends StatelessWidget {
   final IconData icon;
   final Color color;
   final String label;
   final VoidCallback? onPressed;
 
-  const TeacherActionButton({
+  const ActionButton({
     super.key,
     required this.icon,
     required this.color,

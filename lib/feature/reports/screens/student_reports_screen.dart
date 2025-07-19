@@ -5,8 +5,10 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:tasneem_sba7ie/core/router/pdf_generator_helper.dart';
 import 'package:tasneem_sba7ie/core/theme/color_management.dart';
 import 'package:tasneem_sba7ie/core/theme/text_management.dart';
+import 'package:tasneem_sba7ie/core/widgets/action_button.dart';
 import 'package:tasneem_sba7ie/core/widgets/container_shadow.dart';
 import 'package:tasneem_sba7ie/feature/reports/data/models/student_report.dart';
+import 'package:tasneem_sba7ie/feature/reports/logic/student_report_factory/student_report_factory.dart';
 import 'package:tasneem_sba7ie/feature/reports/logic/student_reports_cubit/student_reports_cubit.dart';
 import 'package:tasneem_sba7ie/feature/reports/logic/student_reports_cubit/student_reports_state.dart';
 import 'package:tasneem_sba7ie/feature/teachers/data/models/teacher_model.dart';
@@ -20,6 +22,8 @@ class StudentReportsScreen extends StatefulWidget {
 
 class _StudentReportsScreenState extends State<StudentReportsScreen> {
   int? selectedTeacherId;
+
+  StudentReportsType selectedType = StudentReportsType.teacher;
 
   @override
   Widget build(BuildContext context) {
@@ -44,31 +48,95 @@ class _StudentReportsScreenState extends State<StudentReportsScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  _HeaderSection(),
-                  SizedBox(height: 0.02.sh),
-                  _TeacherDropdown(
-                    teachers: teachers,
-                    selectedTeacherId: selectedTeacherId,
-                    onChanged: (value) {
-                      setState(() {
-                        selectedTeacherId = value;
-                        if (value != null) {
-                          cubit.getStudentReportsByTeacherID(value);
-                        }
-                      });
-                    },
+                  // _HeaderSection(),
+
+                  ContainerShadow(
+                    child: Padding(
+                      padding: EdgeInsets.all(0.02.sw),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text("نوع التقرير",
+                              style: TextManagement.alexandria18BoldMainBlue),
+                          SizedBox(height: 0.02.sh),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              GestureDetector(
+                                onTap: () {
+                                  setState(() {
+                                    selectedType = StudentReportsType.teacher;
+                                  });
+                                },
+                                child: Card(
+                                  elevation: 0,
+                                  color: Colors.transparent,
+                                  child: Container(
+                                    padding: EdgeInsets.all(0.02.sw),
+                                    decoration: StudentReportWidgetFactory
+                                        .buildDecoration(
+                                            cubit: cubit,
+                                            type: selectedType,
+                                            buttonType:
+                                                StudentReportsType.teacher),
+                                    child: const ActionButton(
+                                      color: ColorManagement.mainBlue,
+                                      icon: FontAwesomeIcons.userGraduate,
+                                      label: 'عن طريق المعلم',
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              GestureDetector(
+                                onTap: () {
+                                  setState(() {
+                                    selectedType = StudentReportsType.dateRange;
+                                  });
+                                },
+                                child: Card(
+                                  elevation: 0,
+                                  color: Colors.transparent,
+                                  child: Container(
+                                    padding: EdgeInsets.all(0.02.sw),
+                                    decoration: StudentReportWidgetFactory
+                                        .buildDecoration(
+                                            type: selectedType,
+                                            cubit: cubit,
+                                            buttonType:
+                                                StudentReportsType.dateRange),
+                                    child: const ActionButton(
+                                      color: ColorManagement.accentOrange,
+                                      icon: FontAwesomeIcons.calendar,
+                                      label: 'عن طريق التاريخ',
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
                   ),
                   SizedBox(height: 0.02.sh),
-                  _ReportContent(
-                    state: state,
-                    filteredStudents: filteredStudents,
-                  ),
-                  SizedBox(height: 0.02.sh),
-                  _PDFExportButton(
-                    selectedTeacherId: selectedTeacherId,
-                    teachers: teachers,
-                    filteredStudents: filteredStudents,
-                  ),
+                  Column(
+                    children: [
+                      StudentReportWidgetFactory.buildWidget(
+                          type: selectedType, cubit: cubit),
+                    ],
+                  )
+
+                  // SizedBox(height: 0.02.sh),
+                  // _ReportContent(
+                  //   state: state,
+                  //   filteredStudents: filteredStudents,
+                  // ),
+                  // SizedBox(height: 0.02.sh),
+                  // _PDFExportButton(
+                  //   selectedTeacherId: selectedTeacherId,
+                  //   teachers: teachers,
+                  //   filteredStudents: filteredStudents,
+                  // ),
                 ],
               ),
             ),
@@ -79,92 +147,12 @@ class _StudentReportsScreenState extends State<StudentReportsScreen> {
   }
 }
 
-class _HeaderSection extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return ContainerShadow(
-      child: Padding(
-        padding: EdgeInsets.all(16.sp),
-        child: Row(
-          children: [
-            CircleAvatar(
-              radius: 24.sp,
-              backgroundColor: ColorManagement.mainBlue.withOpacity(0.15),
-              child: FaIcon(
-                FontAwesomeIcons.userGraduate,
-                size: 24.sp,
-                color: ColorManagement.mainBlue,
-              ),
-            ),
-            SizedBox(width: 16.w),
-            Text(
-              'تقارير الطلبة',
-              style: TextManagement.alexandria16BoldMainBlue,
-              semanticsLabel: 'تقارير الطلبة',
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class _TeacherDropdown extends StatelessWidget {
-  final List<Teacher> teachers;
-  final int? selectedTeacherId;
-  final ValueChanged<int?> onChanged;
-
-  const _TeacherDropdown({
-    required this.teachers,
-    required this.selectedTeacherId,
-    required this.onChanged,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return ContainerShadow(
-      child: Padding(
-        padding: EdgeInsets.all(16.sp),
-        child: DropdownButtonFormField<int>(
-          hint: Text(
-            'اختر المعلم',
-            style: TextManagement.alexandria16RegularBlack,
-          ),
-          isExpanded: true,
-          decoration: InputDecoration(
-            filled: true,
-            fillColor: ColorManagement.lightBlue,
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12.r),
-              borderSide: BorderSide.none,
-            ),
-            contentPadding: EdgeInsets.symmetric(
-              horizontal: 16.w,
-              vertical: 12.h,
-            ),
-          ),
-          value: selectedTeacherId,
-          items: teachers.map((teacher) {
-            return DropdownMenuItem<int>(
-              value: teacher.id,
-              child: Text(
-                teacher.name ?? "",
-                style: TextManagement.alexandria16RegularBlack,
-              ),
-            );
-          }).toList(),
-          onChanged: onChanged,
-        ),
-      ),
-    );
-  }
-}
-
-class _ReportContent extends StatelessWidget {
+class ReportContent extends StatelessWidget {
   final StudentReportsState state;
   final List<StudentReport> filteredStudents;
 
-  const _ReportContent({
+  const ReportContent({
+    super.key,
     required this.state,
     required this.filteredStudents,
   });
@@ -348,12 +336,13 @@ class _InfoRow extends StatelessWidget {
   }
 }
 
-class _PDFExportButton extends StatelessWidget {
+class PDFExportButton extends StatelessWidget {
   final int? selectedTeacherId;
   final List<Teacher> teachers;
   final List<StudentReport> filteredStudents;
 
-  const _PDFExportButton({
+  const PDFExportButton({
+    super.key,
     required this.selectedTeacherId,
     required this.teachers,
     required this.filteredStudents,

@@ -10,7 +10,7 @@ import 'package:tasneem_sba7ie/core/widgets/horizontal_month_circles.dart';
 import 'package:tasneem_sba7ie/feature/teachers/data/models/teacher_model.dart';
 import 'package:tasneem_sba7ie/feature/teachers/logic/teacher_management_cubit/teacher_management_cubit.dart';
 import 'package:tasneem_sba7ie/feature/teachers/logic/teacher_management_cubit/teacher_management_state.dart';
-import 'package:tasneem_sba7ie/feature/teachers/screens/widgets/teacher_action_button.dart';
+import 'package:tasneem_sba7ie/core/widgets/action_button.dart';
 import 'package:tasneem_sba7ie/feature/teachers/screens/widgets/teacher_info_card.dart';
 import 'package:tasneem_sba7ie/feature/teachers/screens/widgets/teacher_dialogs.dart';
 
@@ -159,7 +159,7 @@ class _TeacherDetailsState extends State<TeacherDetails> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        TeacherActionButton(
+                        ActionButton(
                           icon: FontAwesomeIcons.plus,
                           color: ColorManagement.mainBlue,
                           label: 'إضافة',
@@ -170,7 +170,7 @@ class _TeacherDetailsState extends State<TeacherDetails> {
                             );
                           },
                         ),
-                        TeacherActionButton(
+                        ActionButton(
                           icon: FontAwesomeIcons.trash,
                           color: Colors.red,
                           label: 'حذف',
