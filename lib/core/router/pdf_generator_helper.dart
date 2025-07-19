@@ -9,19 +9,18 @@ import 'package:tasneem_sba7ie/core/theme/color_management.dart';
 import 'package:tasneem_sba7ie/core/theme/text_management.dart';
 import 'package:tasneem_sba7ie/feature/reports/data/models/student_payment.dart';
 import 'package:tasneem_sba7ie/feature/reports/data/models/student_report.dart';
-import 'package:tasneem_sba7ie/feature/teachers/data/models/teacher_model.dart';
 
 class PDFGeneratorHelper {
   static Future<void> generateStudentsByTeacherPDF(
     BuildContext context,
-    Teacher teacher,
+    String teacherName,
     List<StudentReport> students,
   ) async {
-    if (teacher.id == -1 || students.isEmpty) {
+    if (students.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(
-            'يرجى اختيار معلم أو التأكد من وجود بيانات الطلبة',
+            'لا يوجد بيانات لتقرير الطلبة حسب المعلم',
             style: TextManagement.alexandria16RegularWhite,
           ),
           backgroundColor: ColorManagement.accentOrange,
@@ -61,7 +60,7 @@ class PDFGeneratorHelper {
               ),
               pw.SizedBox(height: 20),
               pw.Text(
-                'المعلم: ${teacher.name}',
+                'المعلم: ${teacherName}',
                 style: pw.TextStyle(
                   font: font,
                   fontSize: 16,

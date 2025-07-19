@@ -30,13 +30,6 @@ class _StudentReportsScreenState extends State<StudentReportsScreen> {
     return BlocBuilder<StudentReportsCubit, StudentReportsState>(
       builder: (context, state) {
         final cubit = context.read<StudentReportsCubit>();
-        final teachers = cubit.teachers;
-        final List<StudentReport> filteredStudents = selectedTeacherId == null
-            ? []
-            : cubit.studentReports
-                .where((student) => student.teacherId == selectedTeacherId)
-                .toList();
-
         return Scaffold(
           appBar: AppBar(
             title: const Text('تقارير الطلبة'),
@@ -48,8 +41,6 @@ class _StudentReportsScreenState extends State<StudentReportsScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // _HeaderSection(),
-
                   ContainerShadow(
                     child: Padding(
                       padding: EdgeInsets.all(0.02.sw),
@@ -365,7 +356,7 @@ class PDFExportButton extends StatelessWidget {
             );
             PDFGeneratorHelper.generateStudentsByTeacherPDF(
               context,
-              teacher,
+              teacher.name ?? '',
               filteredStudents,
             );
           },
