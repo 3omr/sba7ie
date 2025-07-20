@@ -5,7 +5,8 @@ import 'package:tasneem_sba7ie/core/get_it/get_it.dart';
 import 'package:tasneem_sba7ie/core/router/router.dart';
 import 'package:tasneem_sba7ie/feature/home/screens/home_screen.dart';
 import 'package:tasneem_sba7ie/feature/reports/logic/reports_cubit/reports_cubit.dart';
-import 'package:tasneem_sba7ie/feature/reports/logic/student_reports_cubit/student_reports_cubit.dart';
+import 'package:tasneem_sba7ie/feature/reports/logic/student_reports_cubit/student_report_by_date_range_cubit/student_report_by_date_range_cubit.dart';
+import 'package:tasneem_sba7ie/feature/reports/logic/student_reports_cubit/student_report_by_teacher_cubit/student_reports_cubit.dart';
 import 'package:tasneem_sba7ie/feature/reports/screens/reports_screen.dart';
 import 'package:tasneem_sba7ie/feature/reports/screens/student_reports_screen.dart';
 import 'package:tasneem_sba7ie/feature/students/data/models/student_model.dart';
@@ -146,8 +147,15 @@ class AppRouter {
         name: Routers.studentReports,
         path: Routers.studentReports,
         builder: (BuildContext context, GoRouterState state) {
-          return BlocProvider(
-            create: (context) => getIt<StudentReportsCubit>(),
+          return MultiBlocProvider(
+            providers: [
+              BlocProvider(
+                create: (context) => getIt<StudentReportsCubit>(),
+              ),
+              BlocProvider(
+                create: (context) => getIt<StudentReportByDateRangeCubit>(),
+              ),
+            ],
             child: const StudentReportsScreen(),
           );
         },

@@ -1,12 +1,9 @@
-import 'dart:developer';
-
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:tasneem_sba7ie/feature/reports/data/models/student_payment.dart';
 import 'package:tasneem_sba7ie/feature/reports/data/models/student_report.dart';
 import 'package:tasneem_sba7ie/feature/reports/data/repos/student_reports_repo.dart';
+import 'package:tasneem_sba7ie/feature/reports/logic/student_reports_cubit/student_report_by_teacher_cubit/student_reports_state.dart';
 import 'package:tasneem_sba7ie/feature/teachers/data/models/teacher_model.dart';
 import 'package:tasneem_sba7ie/feature/teachers/data/repos/teacher_repo.dart';
-import 'student_reports_state.dart';
 
 class StudentReportsCubit extends Cubit<StudentReportsState> {
   StudentReportsCubit(this._studentReportsRepo, this._teacherRepo)
@@ -20,7 +17,6 @@ class StudentReportsCubit extends Cubit<StudentReportsState> {
   List<Teacher> teachers = [];
   int? _selectedTeacherId;
   List<StudentReport> studentReports = [];
-  List<StudentPayment> studentPayments = [];
 
   int? get selectedTeacherId => _selectedTeacherId;
 
@@ -55,26 +51,6 @@ class StudentReportsCubit extends Cubit<StudentReportsState> {
             : StudentReportsLoaded(studentReports));
       },
       failure: (error) {
-        emit(StudentReportsError(error.error));
-      },
-    );
-  }
-
-  Future<void> getStudentPaymentsByDateRange(
-      DateTime startDate, DateTime endDate) async {
-    emit(StudentReportsLoading());
-    final result = await _studentReportsRepo.getStudentPaymentsByDateRange(
-        startDate, endDate);
-    result.when(
-      success: (success) {
-        studentPayments = success.data;
-        log(studentPayments.length.toString());
-        emit(studentPayments.isEmpty
-            ? StudentReportsEmpty()
-            : StudentReportsPaymentsLoaded(studentPayments));
-      },
-      failure: (error) {
-        log(error.error);
         emit(StudentReportsError(error.error));
       },
     );
