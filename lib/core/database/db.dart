@@ -329,24 +329,40 @@ class Db {
   }
 
   Future<List<Map<String, dynamic>>> getStudentPaymentsByDateRange(
-      int studentId, DateTime startDate, DateTime endDate) async {
+      DateTime startDate, DateTime endDate) async {
     Database? data = await db;
+
+    // Format dates as dd-MM-yyyy to match the database format
+    String startDateStr =
+        "${startDate.day.toString().padLeft(2, '0')}-${startDate.month.toString().padLeft(2, '0')}-${startDate.year}";
+    String endDateStr =
+        "${endDate.day.toString().padLeft(2, '0')}-${endDate.month.toString().padLeft(2, '0')}-${endDate.year}";
+
     List<Map<String, Object?>> res = await data!.rawQuery('''
-      SELECT
-        s.id AS studentId,
-        s.name AS studentName,
-        t.name AS teacherName,
-        sub.money AS moneyPaid,
-        sub.date
-      FROM subscriptions AS sub
-      JOIN students AS s ON sub.idStudent = s.id
-      JOIN teachers AS t ON s.idTeacher = t.id
-      WHERE sub.idStudent = ? AND sub.date >= ? AND sub.date <= ?
-      ORDER BY sub.date DESC;
-    ''', [
-      studentId,
-      startDate.toIso8601String(),
-      endDate.toIso8601String(),
+    SELECT
+      s.id AS studentId,
+      s.name AS studentName,
+      t.name AS teacherName,
+      sub.money AS moneyPaid,
+      sub.date
+    FROM subscriptions AS sub
+    JOIN students AS s ON sub.idStudent = s.id
+    JOIN teachers AS t ON s.idTeacher = t.id
+    WHERE 
+      DATE(SUBSTR(sub.date, 7, 4) || '-' || SUBSTR(sub.date, 4, 2) || '-' || SUBSTR(sub.date, 1, 2)) 
+      BETWEEN 
+      DATE(SUBSTR(?, 7, 4) || '-' || SUBSTR(?, 4, 2) || '-' || SUBSTR(?, 1, 2))
+      AND 
+      DATE(SUBSTR(?, 7, 4) || '-' || SUBSTR(?, 4, 2) || '-' || SUBSTR(?, 1, 2))
+    ORDER BY 
+      DATE(SUBSTR(sub.date, 7, 4) || '-' || SUBSTR(sub.date, 4, 2) || '-' || SUBSTR(sub.date, 1, 2)) DESC;
+  ''', [
+      startDateStr,
+      startDateStr,
+      startDateStr,
+      endDateStr,
+      endDateStr,
+      endDateStr,
     ]);
 
     return res.map((e) => e.map((key, value) => MapEntry(key, value))).toList();

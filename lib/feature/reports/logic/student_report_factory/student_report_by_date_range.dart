@@ -2,12 +2,21 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tasneem_sba7ie/core/theme/color_management.dart';
 import 'package:tasneem_sba7ie/feature/reports/logic/student_report_factory/student_report_factory.dart';
+import 'package:tasneem_sba7ie/feature/reports/screens/widgets/date_range_picker.dart';
+import 'package:tasneem_sba7ie/feature/reports/screens/widgets/student_payment_table.dart';
 
 class StudentReportByDateRange extends StudentReportWidget {
-  StudentReportByDateRange({required super.cubit});
+  final BuildContext? context;
+  StudentReportByDateRange({required super.cubit, this.context});
 
   @override
-  Widget build() => const Placeholder();
+  Widget build() => Column(children: [
+        DateRangePicker(
+          cubit: cubit,
+        ),
+        SizedBox(height: 0.02.sh),
+        StudentPaymentTable(studentPayments: cubit.studentPayments),
+      ]);
 
   @override
   Decoration buildDecoration() => BoxDecoration(

@@ -15,12 +15,14 @@ abstract class StudentReportWidget {
 
 extension StudentReportWidgetFactory on StudentReportWidget {
   static Widget buildWidget(
-      {required StudentReportsType type, required StudentReportsCubit cubit}) {
+      {required StudentReportsType type,
+      required StudentReportsCubit cubit,
+      required BuildContext context}) {
     switch (type) {
       case StudentReportsType.teacher:
         return StudentReportByTeacher(cubit: cubit).build();
       case StudentReportsType.dateRange:
-        return StudentReportByDateRange(cubit: cubit).build();
+        return StudentReportByDateRange(cubit: cubit, context: context).build();
     }
   }
 

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tasneem_sba7ie/feature/reports/data/models/student_payment.dart';
 import 'package:tasneem_sba7ie/feature/reports/data/models/student_report.dart';
@@ -59,18 +61,20 @@ class StudentReportsCubit extends Cubit<StudentReportsState> {
   }
 
   Future<void> getStudentPaymentsByDateRange(
-      int studentId, DateTime startDate, DateTime endDate) async {
+      DateTime startDate, DateTime endDate) async {
     emit(StudentReportsLoading());
     final result = await _studentReportsRepo.getStudentPaymentsByDateRange(
-        studentId, startDate, endDate);
+        startDate, endDate);
     result.when(
       success: (success) {
         studentPayments = success.data;
+        log(studentPayments.length.toString());
         emit(studentPayments.isEmpty
             ? StudentReportsEmpty()
             : StudentReportsPaymentsLoaded(studentPayments));
       },
       failure: (error) {
+        log(error.error);
         emit(StudentReportsError(error.error));
       },
     );

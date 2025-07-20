@@ -20,12 +20,19 @@ class StudentReportsRepo {
   }
 
   Future<Result<List<StudentPayment>>> getStudentPaymentsByDateRange(
-      int studentId, DateTime startDate, DateTime endDate) async {
+      DateTime startDate, DateTime endDate) async {
     try {
-      final res = await _db.getStudentPaymentsByDateRange(
-          studentId, startDate, endDate);
-      final studentPayments =
-          res.map((e) => StudentPayment.fromJson(e)).toList();
+      final res = await _db.getStudentPaymentsByDateRange(startDate, endDate);
+      final studentPayments = res.map((e) {
+        final convertedMap = <String, dynamic>{
+          'studentId': e['studentId'] as int,
+          'studentName': e['studentName'] as String,
+          'teacherName': e['teacherName'] as String,
+          'moneyPaid': e['moneyPaid'] as int,
+          'date': e['date'] as String,
+        };
+        return StudentPayment.fromJson(convertedMap);
+      }).toList();
       return Success(studentPayments);
     } catch (e) {
       return Failure(e.toString());

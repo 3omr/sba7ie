@@ -113,7 +113,7 @@ class _StudentReportsScreenState extends State<StudentReportsScreen> {
                   Column(
                     children: [
                       StudentReportWidgetFactory.buildWidget(
-                          type: selectedType, cubit: cubit),
+                          type: selectedType, cubit: cubit, context: context),
                     ],
                   )
 

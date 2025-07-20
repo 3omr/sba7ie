@@ -1,3 +1,5 @@
+import 'package:intl/intl.dart';
+
 class StudentPayment {
   final int studentId;
   final String studentName;
@@ -19,7 +21,7 @@ class StudentPayment {
       studentName: map['studentName'] as String,
       teacherName: map['teacherName'] as String,
       moneyPaid: map['moneyPaid'] as int,
-      date: DateTime.parse(map['date'] as String),
+      date: DateFormat('dd-MM-yyyy').parse(map['date'] as String),
     );
   }
 
@@ -29,7 +31,7 @@ class StudentPayment {
       'studentName': studentName,
       'teacherName': teacherName,
       'moneyPaid': moneyPaid,
-      'date': date.toIso8601String(),
+      'date': DateFormat('dd-MM-yyyy').format(date),
     };
   }
 }
