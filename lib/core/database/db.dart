@@ -367,4 +367,31 @@ class Db {
 
     return res.map((e) => e.map((key, value) => MapEntry(key, value))).toList();
   }
+
+  Future<List<Map<String, dynamic>>> getTeacherSalaryReportForMonth(
+      String monthYear) async {
+    Database? data = await db;
+
+    List<Map<String, Object?>> res = await data!.rawQuery('''
+    SELECT
+      t.id,
+      t.name AS teacherName,
+      t.salary,
+      IFNULL(a.daysAbsent, 0) AS daysAbsent,
+      IFNULL(a.discounts, 0) AS discounts,
+      CAST(
+        t.salary - 
+        (IFNULL(a.daysAbsent, 0) * (t.salary / 25.0)) - 
+        IFNULL(a.discounts, 0)
+        AS INTEGER
+      ) AS netSalary
+    FROM
+      teachers t
+    LEFT JOIN
+      absences a ON t.id = a.teacherId AND a.month = ?
+    ORDER BY t.name
+  ''', [monthYear]);
+
+    return res.map((e) => e.map((key, value) => MapEntry(key, value))).toList();
+  }
 }

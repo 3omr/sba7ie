@@ -18,4 +18,5 @@ class Routers {
   // reports
   static const String reports = "/reports";
   static const String studentReports = "/studentReports";
+  static const String teacherReport = "/teacherReport";
 }

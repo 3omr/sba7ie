@@ -7,8 +7,10 @@ import 'package:tasneem_sba7ie/feature/home/screens/home_screen.dart';
 import 'package:tasneem_sba7ie/feature/reports/logic/reports_cubit/reports_cubit.dart';
 import 'package:tasneem_sba7ie/feature/reports/logic/student_reports_cubit/student_report_by_date_range_cubit/student_report_by_date_range_cubit.dart';
 import 'package:tasneem_sba7ie/feature/reports/logic/student_reports_cubit/student_report_by_teacher_cubit/student_reports_cubit.dart';
+import 'package:tasneem_sba7ie/feature/reports/logic/teacher_reports_cubit/teacher_reports_cubit.dart';
 import 'package:tasneem_sba7ie/feature/reports/screens/reports_screen.dart';
 import 'package:tasneem_sba7ie/feature/reports/screens/student_reports_screen.dart';
+import 'package:tasneem_sba7ie/feature/reports/screens/teacher_reports_screen.dart';
 import 'package:tasneem_sba7ie/feature/students/data/models/student_model.dart';
 import 'package:tasneem_sba7ie/feature/students/logic/student_subscription_cubit/student_subscription_cubit.dart';
 import 'package:tasneem_sba7ie/feature/students/logic/students_cubit/students_cubit.dart';
@@ -157,6 +159,17 @@ class AppRouter {
               ),
             ],
             child: const StudentReportsScreen(),
+          );
+        },
+      ),
+
+      GoRoute(
+        name: Routers.teacherReport,
+        path: Routers.teacherReport,
+        builder: (BuildContext context, GoRouterState state) {
+          return BlocProvider(
+            create: (context) => getIt<TeacherReportsCubit>(),
+            child: const TeacherReportsScreen(),
           );
         },
       ),

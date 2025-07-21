@@ -1,9 +1,11 @@
 import 'package:get_it/get_it.dart';
 import 'package:tasneem_sba7ie/feature/reports/data/repos/reports_repo.dart';
 import 'package:tasneem_sba7ie/feature/reports/data/repos/student_reports_repo.dart';
+import 'package:tasneem_sba7ie/feature/reports/data/repos/teacher_salary_repo.dart';
 import 'package:tasneem_sba7ie/feature/reports/logic/reports_cubit/reports_cubit.dart';
 import 'package:tasneem_sba7ie/feature/reports/logic/student_reports_cubit/student_report_by_date_range_cubit/student_report_by_date_range_cubit.dart';
 import 'package:tasneem_sba7ie/feature/reports/logic/student_reports_cubit/student_report_by_teacher_cubit/student_reports_cubit.dart';
+import 'package:tasneem_sba7ie/feature/reports/logic/teacher_reports_cubit/teacher_reports_cubit.dart';
 import 'package:tasneem_sba7ie/feature/students/data/repos/student_repo.dart';
 import 'package:tasneem_sba7ie/feature/students/data/repos/student_subscription_repo.dart';
 import 'package:tasneem_sba7ie/feature/students/logic/student_subscription_cubit/student_subscription_cubit.dart';
@@ -58,4 +60,11 @@ void getItSetup() {
 
   getIt.registerFactory<StudentReportByDateRangeCubit>(
       () => StudentReportByDateRangeCubit(getIt<StudentReportsRepo>()));
+
+  // teacher reports
+  getIt.registerLazySingleton<TeacherSalaryRepo>(
+      () => TeacherSalaryRepo(getIt<Db>()));
+  getIt.registerFactory<TeacherReportsCubit>(() => TeacherReportsCubit(
+        getIt<TeacherSalaryRepo>(),
+      ));
 }

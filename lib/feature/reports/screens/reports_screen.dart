@@ -172,8 +172,7 @@ class ReportsScreen extends StatelessWidget {
                         label: 'تقارير المعلمين',
                         color: ColorManagement.accentOrange,
                         onTap: () {
-                          // TODO: Add navigation or action for Teacher Reports
-                          // Example: context.pushNamed(Routers.teacherReports);
+                          context.pushNamed(Routers.teacherReport);
                         },
                       ),
                     ],
