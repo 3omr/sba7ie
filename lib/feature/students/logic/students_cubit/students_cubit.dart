@@ -16,7 +16,11 @@ class StudentsCubit extends Cubit<StudentsState> {
   final TeacherRepo _teacherRepo;
 
   List<Student> students = [];
+  List<Student> _allStudents = []; // Keep original list for filtering
   List<Teacher> teachers = [];
+  int? _selectedTeacherId; // Current filter
+
+  int? get selectedTeacherId => _selectedTeacherId;
 
   Future<void> getTeachers() async {
     var resp = await _teacherRepo.getTeachers();
@@ -40,13 +44,36 @@ class StudentsCubit extends Cubit<StudentsState> {
     final result = await _studentRepo.getStudents();
     result.when(
       success: (success) {
-        students = success.data;
+        _allStudents = success.data;
+        _applyFilter();
         emit(StudentsLoaded(students));
       },
       failure: (failure) {
         emit(StudentsError(failure.error));
       },
     );
+  }
+
+  void filterByTeacher(int? teacherId) {
+    _selectedTeacherId = teacherId;
+    _applyFilter();
+    emit(StudentsLoaded(students));
+  }
+
+  void clearFilter() {
+    _selectedTeacherId = null;
+    _applyFilter();
+    emit(StudentsLoaded(students));
+  }
+
+  void _applyFilter() {
+    if (_selectedTeacherId == null) {
+      students = List.from(_allStudents);
+    } else {
+      students = _allStudents
+          .where((student) => student.idTeacher == _selectedTeacherId)
+          .toList();
+    }
   }
 
   Future<void> addStudent(Student student) async {
@@ -69,8 +96,16 @@ class StudentsCubit extends Cubit<StudentsState> {
     final result = await _studentRepo.updateStudent(oldStudentData, newStudentData);
     result.when(
       success: (success) async {
-        int index = students.indexOf(oldStudentData);
-        students[index] = newStudentData;
+        int allIndex = _allStudents.indexOf(oldStudentData);
+        if (allIndex != -1) {
+          _allStudents[allIndex] = newStudentData;
+        }
+        
+        int filteredIndex = students.indexOf(oldStudentData);
+        if (filteredIndex != -1) {
+          students[filteredIndex] = newStudentData;
+        }
+        
         emit(StudentsAdded());
       },
       failure: (failure) {
@@ -84,6 +119,7 @@ class StudentsCubit extends Cubit<StudentsState> {
     final result = await _studentRepo.deleteStudent(student.id!);
     result.when(
       success: (success) {
+        _allStudents.remove(student);
         students.remove(student);
         emit(StudentsLoaded(students));
       },
