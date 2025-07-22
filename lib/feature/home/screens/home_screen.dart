@@ -20,11 +20,13 @@ class HomeScreen extends StatelessWidget {
           decoration: BoxDecoration(
             gradient: LinearGradient(
               colors: [
-                ColorManagement.lightGrey.withOpacity(0.9),
+                ColorManagement.lightGrey.withOpacity(0.3),
                 ColorManagement.white,
+                ColorManagement.white.withOpacity(0.95),
               ],
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
+              stops: const [0.0, 0.6, 1.0],
             ),
           ),
           child: Column(
@@ -36,25 +38,29 @@ class HomeScreen extends StatelessWidget {
                     left: 0.04.sw, right: 0.04.sw, top: 0.06.sh),
                 width: double.infinity,
                 decoration: BoxDecoration(
-                  color: ColorManagement.mainBlue,
-                  borderRadius: BorderRadius.only(
-                    bottomLeft: Radius.circular(30.r),
-                    bottomRight: Radius.circular(30.r),
-                  ),
-                  gradient: const LinearGradient(
+                  borderRadius: BorderRadius.circular(25.r),
+                  gradient: LinearGradient(
                     colors: [
-                      ColorManagement.darkGrey,
+                      ColorManagement.darkGrey.withOpacity(0.9),
                       ColorManagement.mainBlue,
+                      ColorManagement.mainBlue.withOpacity(0.8),
                     ],
                     begin: Alignment.topLeft,
                     end: Alignment.bottomRight,
+                    stops: const [0.0, 0.6, 1.0],
                   ),
                   boxShadow: [
                     BoxShadow(
-                      color: ColorManagement.darkGrey.withOpacity(0.4),
-                      blurRadius: 12,
-                      spreadRadius: 3,
-                      offset: const Offset(0, 6),
+                      color: ColorManagement.mainBlue.withOpacity(0.3),
+                      blurRadius: 20,
+                      spreadRadius: 0,
+                      offset: const Offset(0, 10),
+                    ),
+                    BoxShadow(
+                      color: ColorManagement.darkGrey.withOpacity(0.1),
+                      blurRadius: 40,
+                      spreadRadius: 0,
+                      offset: const Offset(0, 20),
                     ),
                   ],
                 ),
@@ -65,22 +71,60 @@ class HomeScreen extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          "مرحبا بك في",
-                          style: TextManagement.alexandria16RegularLightGrey,
+                        Container(
+                          padding: EdgeInsets.symmetric(
+                            horizontal: 12.w,
+                            vertical: 6.h,
+                          ),
+                          decoration: BoxDecoration(
+                            color: ColorManagement.yellow.withOpacity(0.2),
+                            borderRadius: BorderRadius.circular(20.r),
+                            border: Border.all(
+                              color: ColorManagement.yellow.withOpacity(0.3),
+                              width: 1,
+                            ),
+                          ),
+                          child: Text(
+                            "مرحبا بك في",
+                            style: TextManagement.alexandria16RegularLightGrey
+                                .copyWith(
+                              color: ColorManagement.yellow.withOpacity(0.9),
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
                         ),
                         SizedBox(height: 0.01.sh),
                         Text(
                           "حضانة تسنيم الخاصة",
-                          style: TextManagement.ruwudu30BoldWhite,
+                          style: TextManagement.alexandria22BoldWhite,
                         ),
+                        SizedBox(height: 0.01.sh),
+                        Text(
+                          "إدارة متطورة لمستقبل أفضل",
+                          style: TextManagement.alexandria16RegularLightGrey
+                              .copyWith(
+                            color: ColorManagement.lightGrey.withOpacity(0.8),
+                            fontSize: 14.sp,
+                          ),
+                        )
                       ],
                     ),
                     const Spacer(),
-                    FaIcon(
-                      FontAwesomeIcons.children,
-                      size: 0.08.sh,
-                      color: ColorManagement.yellow,
+                    Container(
+                      padding: EdgeInsets.all(16.w),
+                      decoration: BoxDecoration(
+                        color: ColorManagement.yellow.withOpacity(0.15),
+                        shape: BoxShape.circle,
+                        border: Border.all(
+                          color: ColorManagement.yellow.withOpacity(0.3),
+                          width: 2,
+                        ),
+                      ),
+                      child: FaIcon(
+                        FontAwesomeIcons.children,
+                        size: 0.06.sh,
+                        color: ColorManagement.yellow,
+                      ),
                     ),
                   ],
                 ),
@@ -141,9 +185,25 @@ class HomeScreen extends StatelessWidget {
               SizedBox(height: 0.05.sh),
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 0.06.sw),
-                child: Text(
-                  "الأقسام",
-                  style: TextManagement.alexandria24BoldBlack,
+                child: Row(
+                  children: [
+                    Container(
+                      width: 4.w,
+                      height: 25.h,
+                      decoration: BoxDecoration(
+                        color: ColorManagement.mainBlue,
+                        borderRadius: BorderRadius.circular(2.r),
+                      ),
+                    ),
+                    SizedBox(width: 12.w),
+                    Text(
+                      "الأقسام الرئيسية",
+                      style: TextManagement.alexandria24BoldBlack.copyWith(
+                        fontSize: 22.sp,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                  ],
                 ),
               ),
               SizedBox(height: 0.02.sh),
@@ -174,9 +234,11 @@ class HomeScreen extends StatelessWidget {
                     },
                   ),
                   HomeScreenSection(
-                    icon: FontAwesomeIcons.moneyBill,
-                    text: "الاشتراكات",
-                    onTap: () {}, // Add navigation logic here
+                    icon: FontAwesomeIcons.gear,
+                    text: "الاعدادات",
+                    onTap: () {
+                      context.pushNamed(Routers.settings);
+                    },
                   ),
                   HomeScreenSection(
                     icon: FontAwesomeIcons.book,

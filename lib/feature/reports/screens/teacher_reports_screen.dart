@@ -78,9 +78,10 @@ class TeacherReportsScreen extends StatelessWidget {
                       },
                     );
                   } else if (state is TeacherReportsEmpty) {
-                    return const ContainerShadow(
+                    return  ContainerShadow(
                         child: Text(
                       'لا يوجد تقارير لهذا الشهر',
+                      style: TextManagement.alexandria16RegularBlack,
                     ));
                   }
                   return ContainerShadow(

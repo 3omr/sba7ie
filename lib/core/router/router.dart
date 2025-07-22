@@ -2,7 +2,7 @@ class Routers {
   static const String home = '/';
   static const String details = '/details';
   static const String settings = '/settings';
-  
+
   // teachers
   static const String addTeacher = '/addTeacher';
   static const String updateTeacher = '/updateTeacher';

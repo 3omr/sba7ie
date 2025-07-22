@@ -1,4 +1,5 @@
 import 'package:get_it/get_it.dart';
+import 'package:tasneem_sba7ie/core/database/backup_service.dart';
 import 'package:tasneem_sba7ie/feature/reports/data/repos/reports_repo.dart';
 import 'package:tasneem_sba7ie/feature/reports/data/repos/student_reports_repo.dart';
 import 'package:tasneem_sba7ie/feature/reports/data/repos/teacher_salary_repo.dart';
@@ -20,6 +21,11 @@ GetIt getIt = GetIt.instance;
 void getItSetup() {
   // DB
   getIt.registerLazySingleton<Db>(() => Db());
+
+  // Backup
+  getIt.registerLazySingleton<BackupService>(() => BackupService(
+    getIt<Db>(),
+  ));
 
   // Teacher
   getIt.registerLazySingleton<TeacherRepo>(() => TeacherRepo(getIt<Db>()));

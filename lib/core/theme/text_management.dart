@@ -69,6 +69,13 @@ class TextManagement {
     color: ColorManagement.black,
   );
 
+    static TextStyle alexandria22BoldWhite = GoogleFonts.alexandria(
+    fontSize: 22.0.sp,
+    fontWeight: FontWeight.w700,
+    color: ColorManagement.white,
+  );
+
+
   // Lalezar Font Styles
   static TextStyle lalezar16RegularBlack = GoogleFonts.lalezar(
     fontSize: 16.0.sp,

@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:tasneem_sba7ie/core/database/backup_service.dart';
 import 'package:tasneem_sba7ie/core/get_it/get_it.dart';
 import 'package:tasneem_sba7ie/core/router/router.dart';
+import 'package:tasneem_sba7ie/feature/home/screens/backup_restore_page.dart';
 import 'package:tasneem_sba7ie/feature/home/screens/home_screen.dart';
 import 'package:tasneem_sba7ie/feature/reports/logic/reports_cubit/reports_cubit.dart';
 import 'package:tasneem_sba7ie/feature/reports/logic/student_reports_cubit/student_report_by_date_range_cubit/student_report_by_date_range_cubit.dart';
@@ -173,6 +175,12 @@ class AppRouter {
           );
         },
       ),
+      GoRoute(
+          name: Routers.settings,
+          path: Routers.settings,
+          builder: (context, state) => BackupPage(
+                backupService: getIt.get<BackupService>(),
+              )),
     ],
   );
 }
