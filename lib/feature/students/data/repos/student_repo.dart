@@ -42,6 +42,7 @@ class StudentRepo {
   Future<Result<int>> deleteStudent(int studentId) async {
     try {
       int resp = await _db.deleteData(studentsTable, "id = $studentId");
+      await _db.deleteAllStudentSubscriptions(studentId);
       return Success(resp);
     } catch (e) {
       return Failure(e.toString());

@@ -202,6 +202,46 @@ class Db {
     return res;
   }
 
+  Future<int> deleteTeacherAbsenceByMonth({
+    required int teacherId,
+    String? month, // Make month optional
+  }) async {
+    Database? data = await db;
+    int rowsDeleted = 0;
+
+    if (month != null && month.isNotEmpty) {
+      // Delete for a specific month
+      rowsDeleted = await data!.delete(
+        'absences',
+        where: 'teacherId = ? AND month = ?',
+        whereArgs: [teacherId, month],
+      );
+    } else {
+      // Delete all absences for the teacher
+      rowsDeleted = await data!.delete(
+        'absences',
+        where: 'teacherId = ?',
+        whereArgs: [teacherId],
+      );
+    }
+    return rowsDeleted;
+  }
+
+  Future<int> deleteAllTeacherAbsences(int teacherId) async {
+    try {
+      // This method reuses the logic from deleteTeacherAbsenceByMonth
+      // by simply not providing a 'month' value.
+      int rowsDeleted = await deleteTeacherAbsenceByMonth(
+        teacherId: teacherId,
+        month: null, // Explicitly pass null to delete all for the teacher
+      );
+      return rowsDeleted;
+    } catch (e) {
+      print('Error deleting all teacher absences: $e');
+      return 0; // Return 0 rows deleted on error
+    }
+  }
+
   Future<int> deleteTeacherAbsences({
     required int teacherId,
     String? month, // Make month optional

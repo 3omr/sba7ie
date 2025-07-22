@@ -44,7 +44,14 @@ class _AddUpdateStudentScreenState extends State<AddUpdateStudentScreen> {
       phoneController.text = widget.student.phoneNumber ?? '';
       subscriptionController.text =
           widget.student.subscription?.toString() ?? '';
-      selectedTeacherId = widget.student.idTeacher;
+
+      bool teacherExists = widget.teachersList
+          .any((teacher) => teacher.id == widget.student!.idTeacher);
+      if (teacherExists) {
+        selectedTeacherId = widget.student.idTeacher;
+      } else {
+        selectedTeacherId = null;
+      }
     }
   }
 

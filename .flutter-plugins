@@ -1,9 +1,17 @@
 # This is a generated file; do not edit or check into version control.
+file_picker=C:\\Users\\oabde\\AppData\\Local\\Pub\\Cache\\hosted\\pub.dev\\file_picker-10.2.0\\
+flutter_plugin_android_lifecycle=C:\\Users\\oabde\\AppData\\Local\\Pub\\Cache\\hosted\\pub.dev\\flutter_plugin_android_lifecycle-2.0.28\\
 path_provider=C:\\Users\\oabde\\AppData\\Local\\Pub\\Cache\\hosted\\pub.dev\\path_provider-2.1.5\\
 path_provider_android=C:\\Users\\oabde\\AppData\\Local\\Pub\\Cache\\hosted\\pub.dev\\path_provider_android-2.2.17\\
 path_provider_foundation=C:\\Users\\oabde\\AppData\\Local\\Pub\\Cache\\hosted\\pub.dev\\path_provider_foundation-2.4.1\\
 path_provider_linux=C:\\Users\\oabde\\AppData\\Local\\Pub\\Cache\\hosted\\pub.dev\\path_provider_linux-2.2.1\\
 path_provider_windows=C:\\Users\\oabde\\AppData\\Local\\Pub\\Cache\\hosted\\pub.dev\\path_provider_windows-2.3.0\\
+permission_handler=C:\\Users\\oabde\\AppData\\Local\\Pub\\Cache\\hosted\\pub.dev\\permission_handler-12.0.1\\
+permission_handler_android=C:\\Users\\oabde\\AppData\\Local\\Pub\\Cache\\hosted\\pub.dev\\permission_handler_android-13.0.1\\
+permission_handler_apple=C:\\Users\\oabde\\AppData\\Local\\Pub\\Cache\\hosted\\pub.dev\\permission_handler_apple-9.4.7\\
+permission_handler_html=C:\\Users\\oabde\\AppData\\Local\\Pub\\Cache\\hosted\\pub.dev\\permission_handler_html-0.1.3+5\\
+permission_handler_windows=C:\\Users\\oabde\\AppData\\Local\\Pub\\Cache\\hosted\\pub.dev\\permission_handler_windows-0.2.1\\
+printing=C:\\Users\\oabde\\AppData\\Local\\Pub\\Cache\\hosted\\pub.dev\\printing-5.14.2\\
 sqflite=C:\\Users\\oabde\\AppData\\Local\\Pub\\Cache\\hosted\\pub.dev\\sqflite-2.4.2\\
 sqflite_android=C:\\Users\\oabde\\AppData\\Local\\Pub\\Cache\\hosted\\pub.dev\\sqflite_android-2.4.1\\
 sqflite_darwin=C:\\Users\\oabde\\AppData\\Local\\Pub\\Cache\\hosted\\pub.dev\\sqflite_darwin-2.4.2\\

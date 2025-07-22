@@ -30,6 +30,7 @@ environment:
 dependencies:
   cupertino_icons: ^1.0.2
   date_picker_plus: ^4.2.0
+  file_picker: ^10.2.0
   fl_chart: ^1.0.0
   flutter:
     sdk: flutter
@@ -47,6 +48,7 @@ dependencies:
   path: ^1.9.1
   path_provider: ^2.1.5
   pdf: ^3.11.3
+  permission_handler: ^12.0.1
   printing: ^5.14.2
   sqflite: ^2.3.2
   url_launcher: ^6.1.14
