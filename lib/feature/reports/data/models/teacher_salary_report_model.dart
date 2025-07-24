@@ -1,3 +1,5 @@
+import 'package:tasneem_sba7ie/core/helper/net_salary_calculator.dart';
+
 class TeacherSalaryReportModel {
   final int id;
   final String teacherName;
@@ -23,7 +25,8 @@ class TeacherSalaryReportModel {
       salary: map['salary'] ?? 0,
       daysAbsent: map['daysAbsent'] ?? 0,
       discounts: map['discounts'] ?? 0,
-      netSalary: map['netSalary'] ?? 0,
+      netSalary: NetSalaryCalculator.calculateNetSalary(
+          map['salary'] ?? 0, map['daysAbsent'] ?? 0, map['discounts'] ?? 0),
     );
   }
 

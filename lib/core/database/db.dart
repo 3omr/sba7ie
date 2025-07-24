@@ -418,13 +418,7 @@ class Db {
       t.name AS teacherName,
       t.salary,
       IFNULL(a.daysAbsent, 0) AS daysAbsent,
-      IFNULL(a.discounts, 0) AS discounts,
-      CAST(
-        t.salary - 
-        (IFNULL(a.daysAbsent, 0) * (t.salary / 25.0)) - 
-        IFNULL(a.discounts, 0)
-        AS INTEGER
-      ) AS netSalary
+      IFNULL(a.discounts, 0) AS discounts
     FROM
       teachers t
     LEFT JOIN

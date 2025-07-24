@@ -28,7 +28,7 @@ class FileManagerService {
       }
 
       String selectedPath = result.files.single.path!;
-      
+
       // التحقق من امتداد الملف
       if (!selectedPath.toLowerCase().endsWith('.json')) {
         throw Exception('يجب اختيار ملف بصيغة JSON');
@@ -70,18 +70,18 @@ class FileManagerService {
   /// الحصول على المجلدات الافتراضية
   Future<Map<String, String>> getDefaultDirectories() async {
     Map<String, String> directories = {};
-    
+
     try {
       // مجلد التطبيق
       Directory? appDir = await getApplicationDocumentsDirectory();
       directories['app_documents'] = appDir.path;
-      
+
       // مجلد التخزين الخارجي
       Directory? externalDir = await getExternalStorageDirectory();
       if (externalDir != null) {
         directories['external_storage'] = externalDir.path;
       }
-      
+
       // مجلد التنزيلات (للأندرويد)
       if (Platform.isAndroid) {
         String downloadsPath = '/storage/emulated/0/Download';
@@ -89,7 +89,7 @@ class FileManagerService {
           directories['downloads'] = downloadsPath;
         }
       }
-      
+
       // مجلد المستندات (للأندرويد)
       if (Platform.isAndroid) {
         String documentsPath = '/storage/emulated/0/Documents';
@@ -97,11 +97,10 @@ class FileManagerService {
           directories['documents'] = documentsPath;
         }
       }
-      
     } catch (e) {
       print('خطأ في الحصول على المجلدات الافتراضية: $e');
     }
-    
+
     return directories;
   }
 
@@ -127,13 +126,14 @@ class FileManagerService {
       if (!await directory.exists()) {
         return false;
       }
-      
+
       // اختبار الكتابة بإنشاء ملف مؤقت
-      String testFilePath = '$path/.write_test_${DateTime.now().millisecondsSinceEpoch}';
+      String testFilePath =
+          '$path/.write_test_${DateTime.now().millisecondsSinceEpoch}';
       File testFile = File(testFilePath);
       await testFile.writeAsString('test');
       await testFile.delete();
-      
+
       return true;
     } catch (e) {
       print('لا يمكن الكتابة في المجلد: $e');
@@ -148,9 +148,9 @@ class FileManagerService {
       if (!await file.exists()) {
         return null;
       }
-      
+
       FileStat stat = await file.stat();
-      
+
       return {
         'path': filePath,
         'name': filePath.split('/').last,
@@ -175,41 +175,39 @@ class FileManagerService {
       if (!await directory.exists()) {
         return [];
       }
-      
+
       List<FileSystemEntity> entities = directory.listSync();
       List<Map<String, dynamic>> files = [];
-      
+
       for (FileSystemEntity entity in entities) {
         if (entity is File) {
           String fileName = entity.path.split('/').last;
-          
+
           // تجاهل الملفات المخفية إذا لم يُطلب تضمينها
           if (!includeHidden && fileName.startsWith('.')) {
             continue;
           }
-          
+
           // تصفية حسب الامتدادات
           if (extensions != null && extensions.isNotEmpty) {
             bool hasValidExtension = extensions.any(
-              (ext) => fileName.toLowerCase().endsWith(ext.toLowerCase())
-            );
+                (ext) => fileName.toLowerCase().endsWith(ext.toLowerCase()));
             if (!hasValidExtension) {
               continue;
             }
           }
-          
+
           Map<String, dynamic>? fileInfo = await getFileInfo(entity.path);
           if (fileInfo != null) {
             files.add(fileInfo);
           }
         }
       }
-      
+
       // ترتيب الملفات حسب تاريخ التعديل (الأحدث أولاً)
-      files.sort((a, b) => 
-        (b['modified'] as DateTime).compareTo(a['modified'] as DateTime)
-      );
-      
+      files.sort((a, b) =>
+          (b['modified'] as DateTime).compareTo(a['modified'] as DateTime));
+
       return files;
     } catch (e) {
       print('خطأ في قراءة محتويات المجلد: $e');
@@ -236,12 +234,13 @@ class FileManagerService {
   Future<bool> copyFile(String sourcePath, String destinationPath) async {
     try {
       File sourceFile = File(sourcePath);
+      // ignore: unused_local_variable
       File destinationFile = File(destinationPath);
-      
+
       if (!await sourceFile.exists()) {
         return false;
       }
-      
+
       await sourceFile.copy(destinationPath);
       return true;
     } catch (e) {
@@ -254,11 +253,11 @@ class FileManagerService {
   Future<bool> moveFile(String sourcePath, String destinationPath) async {
     try {
       File sourceFile = File(sourcePath);
-      
+
       if (!await sourceFile.exists()) {
         return false;
       }
-      
+
       await sourceFile.rename(destinationPath);
       return true;
     } catch (e) {
@@ -284,18 +283,20 @@ class FileManagerService {
   }
 
   /// إنشاء اسم ملف فريد لتجنب التداخل
-  Future<String> generateUniqueFileName(String directoryPath, String fileName) async {
+  Future<String> generateUniqueFileName(
+      String directoryPath, String fileName) async {
     String baseName = fileName.split('.').first;
-    String extension = fileName.contains('.') ? '.${fileName.split('.').last}' : '';
-    
+    String extension =
+        fileName.contains('.') ? '.${fileName.split('.').last}' : '';
+
     String uniqueFileName = fileName;
     int counter = 1;
-    
+
     while (await File('$directoryPath/$uniqueFileName').exists()) {
       uniqueFileName = '${baseName}_$counter$extension';
       counter++;
     }
-    
+
     return uniqueFileName;
   }
 }
