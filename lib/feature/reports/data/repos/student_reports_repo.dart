@@ -19,6 +19,18 @@ class StudentReportsRepo {
     }
   }
 
+  Future<Result<List<StudentReport>>> getStudentReportsByTeacherIdAndMonth(
+      int teacherId, String month) async {
+    try {
+      final res =
+          await _db.getStudentReportsByTeacherIdAndMonth(teacherId, month);
+      final studentReports = res.map((e) => StudentReport.fromJson(e)).toList();
+      return Success(studentReports);
+    } catch (e) {
+      return Failure(e.toString());
+    }
+  }
+
   Future<Result<List<StudentPayment>>> getStudentPaymentsByDateRange(
       DateTime startDate, DateTime endDate) async {
     try {

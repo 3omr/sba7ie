@@ -380,6 +380,31 @@ class Db {
     return res.map((e) => e.map((key, value) => MapEntry(key, value))).toList();
   }
 
+  Future<List<Map<String, dynamic>>> getStudentReportsByTeacherIdAndMonth(
+      int teacherId, String month) async {
+    Database? data = await db;
+    List<Map<String, Object?>> res = await data!.rawQuery('''
+      SELECT
+        s.id,
+        s.name,
+        s.subscription,
+        s.idTeacher,
+        IFNULL(SUM(CASE WHEN sub.date = ? THEN sub.money ELSE 0 END), 0) AS totalPaid,
+        (s.subscription - IFNULL(SUM(CASE WHEN sub.date = ? THEN sub.money ELSE 0 END), 0)) AS remaining
+      FROM students AS s
+      LEFT JOIN subscriptions AS sub
+        ON s.id = sub.idStudent
+      WHERE s.idTeacher = ?
+      GROUP BY
+        s.id,
+        s.name,
+        s.subscription,
+        s.idTeacher;
+    ''', [month, month, teacherId]);
+
+    return res.map((e) => e.map((key, value) => MapEntry(key, value))).toList();
+  }
+
   Future<List<Map<String, dynamic>>> getStudentPaymentsByDateRange(
       DateTime startDate, DateTime endDate) async {
     Database? data = await db;

@@ -25,7 +25,7 @@ class _HorizontalMonthCirclesState extends State<HorizontalMonthCircles> {
 
   @override
   Widget build(BuildContext context) {
-    final DateTime startDate = DateTime(2025, 1); // Start from July 2025
+    final DateTime startDate = DateTime(2025, 1);
     const int numberOfMonths = 24;
 
     return SizedBox(
