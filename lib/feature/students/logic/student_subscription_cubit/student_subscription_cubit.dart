@@ -1,4 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tasneem_sba7ie/core/helper/app_settings.dart';
+import 'package:tasneem_sba7ie/core/helper/date_helper.dart';
 import 'package:tasneem_sba7ie/feature/students/data/models/student_model.dart';
 import 'package:tasneem_sba7ie/feature/students/data/models/subscription_model.dart';
 import 'package:tasneem_sba7ie/feature/students/data/repos/student_subscription_repo.dart';
@@ -16,7 +18,9 @@ class StudentSubscriptionCubit extends Cubit<StudentSubscriptionState> {
 
   set student(Student student) {
     _student = student;
-    getStudentSubscriptionsById();
+    AppSettings.APP_Working == StudentSubscriptionStatus.yearly
+        ? getStudentSubscriptionsById()
+        : getStudentSubscriptionsByIdAndMonth();
   }
 
   final List<Subscription> _subscriptions = [];
@@ -63,7 +67,9 @@ class StudentSubscriptionCubit extends Cubit<StudentSubscriptionState> {
 
     result.when(
       success: (rowsAffected) {
-        getStudentSubscriptionsById();
+        AppSettings.APP_Working == StudentSubscriptionStatus.yearly
+            ? getStudentSubscriptionsById()
+            : getStudentSubscriptionsByIdAndMonth();
 
         emit(StudentSubscriptionLoaded(_subscriptions));
       },
@@ -79,8 +85,42 @@ class StudentSubscriptionCubit extends Cubit<StudentSubscriptionState> {
         .deleteStudentSubscriptionByDate(_student.id!, date);
     result.when(
       success: (rowsAffected) {
-        getStudentSubscriptionsById();
+        AppSettings.APP_Working == StudentSubscriptionStatus.yearly
+            ? getStudentSubscriptionsById()
+            : getStudentSubscriptionsByIdAndMonth();
         emit(StudentSubscriptionLoaded(_subscriptions));
+      },
+      failure: (error) {
+        emit(StudentSubscriptionError(error.error));
+      },
+    );
+  }
+
+  // month subscription
+  String _currentMonth = DateHelper.getCurrentMonthAndYear();
+
+  String get currentMonth => _currentMonth;
+
+  Future<void> changeMonth(String month) async {
+    _currentMonth = month;
+    AppSettings.APP_Working == StudentSubscriptionStatus.yearly
+        ? getStudentSubscriptionsById()
+        : getStudentSubscriptionsByIdAndMonth();
+    emit(StudentSubscriptionLoaded(_subscriptions));
+  }
+
+  void getStudentSubscriptionsByIdAndMonth() async {
+    emit(StudentSubscriptionLoading());
+    final result = await _studentSubscriptionRepo
+        .getStudentSubscriptionsByIdAndMonth(_student.id!, _currentMonth);
+
+    result.when(
+      success: (subscriptions) {
+        _subscriptions.clear();
+        _subscriptions.addAll(subscriptions.data);
+        _subscriptions.isEmpty
+            ? emit(StudentSubscriptionEmpty())
+            : emit(StudentSubscriptionLoaded(_subscriptions));
       },
       failure: (error) {
         emit(StudentSubscriptionError(error.error));

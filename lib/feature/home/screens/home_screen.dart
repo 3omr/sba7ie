@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
+import 'package:tasneem_sba7ie/core/helper/app_settings.dart';
 import 'package:tasneem_sba7ie/core/router/router.dart';
 import 'package:tasneem_sba7ie/core/theme/color_management.dart';
 import 'package:tasneem_sba7ie/core/theme/text_management.dart';
@@ -95,7 +96,7 @@ class HomeScreen extends StatelessWidget {
                         ),
                         SizedBox(height: 0.01.sh),
                         Text(
-                          "حضانة تسنيم الخاصة",
+                          AppSettings.APP_NAME,
                           style: TextManagement.alexandria22BoldWhite,
                         ),
                         SizedBox(height: 0.01.sh),

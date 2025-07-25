@@ -1,8 +1,10 @@
+import 'package:tasneem_sba7ie/core/helper/app_settings.dart';
+
 class WriteMessageHelper {
   static String writeMessageToPhoneToGetSubscription(
       int subscription, int paid, int remaining) {
     return """
-*حضانة تسنيم الخاصة*
+*${AppSettings.APP_NAME}*
 
 
 نحيط حضرتكم علماً بأن اشتراك الطالب هو $subscription جنيه.

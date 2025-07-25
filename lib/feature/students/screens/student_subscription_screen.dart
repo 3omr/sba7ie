@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:tasneem_sba7ie/core/helper/app_settings.dart';
 import 'package:tasneem_sba7ie/core/theme/color_management.dart';
 import 'package:tasneem_sba7ie/core/theme/text_management.dart';
 import 'package:tasneem_sba7ie/core/widgets/Error_state_widget.dart';
 import 'package:tasneem_sba7ie/core/widgets/container_shadow.dart';
 import 'package:tasneem_sba7ie/core/widgets/delete_dialog.dart';
 import 'package:tasneem_sba7ie/core/widgets/empty_state_widget.dart';
+import 'package:tasneem_sba7ie/core/widgets/horizontal_month_circles.dart';
 import 'package:tasneem_sba7ie/feature/students/data/models/student_model.dart';
 import 'package:tasneem_sba7ie/feature/students/logic/student_subscription_cubit/student_subscription_cubit.dart';
 import 'package:tasneem_sba7ie/feature/students/screens/widgets/student_dialogs.dart';
@@ -50,10 +52,14 @@ class _StudentSubscriptionScreenState extends State<StudentSubscriptionScreen> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          StudentDialogs.showAddAbsenceDiscountDialog(
-            context: context,
-            studentSubscriptionCubit: _studentSubscriptionCubit,
-          );
+          AppSettings.APP_Working == StudentSubscriptionStatus.yearly
+              ? StudentDialogs.showAddNewSubscriptionDialogYearly(
+                  context: context,
+                  studentSubscriptionCubit: _studentSubscriptionCubit,
+                )
+              : StudentDialogs.showAddNewSubscriptionDialogYearlyMonthly(
+                  context: context,
+                  studentSubscriptionCubit: _studentSubscriptionCubit);
         },
         child: const Icon(Icons.add),
       ),
@@ -70,72 +76,109 @@ class _StudentSubscriptionScreenState extends State<StudentSubscriptionScreen> {
               ),
               SizedBox(height: 0.04.sh),
 
+              // selection month in subscriptions monthly
+              if (AppSettings.APP_Working == StudentSubscriptionStatus.monthly)
+                ContainerShadow(
+                  child: Padding(
+                    padding: EdgeInsets.all(8.0.sp),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "قم باختيار الشهر",
+                          style: TextManagement.alexandria18BoldMainBlue,
+                        ),
+                        HorizontalMonthCircles(
+                            cubit: _studentSubscriptionCubit),
+                      ],
+                    ),
+                  ),
+                ),
+              SizedBox(height: 0.02.sh),
+
               // --- Subscription Info Section ---
               SubscriptionInfoSection(
                   studentSubscriptionCubit: _studentSubscriptionCubit),
               SizedBox(height: 0.04.sh),
+              if (AppSettings.APP_Working == StudentSubscriptionStatus.yearly)
+                Column(
+                  children: [
+                    Text(
+                      "المدفوعات",
+                      style: TextManagement.alexandria18RegularBlack.copyWith(
+                        color: ColorManagement.mainBlue,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    SizedBox(height: 0.02.sh),
+
+                    // --- Payments List Header ---
+                    Container(
+                      padding: EdgeInsets.symmetric(vertical: 0.01.sh),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(12.r),
+                        border: Border.all(
+                            color: ColorManagement.mainBlue.withOpacity(0.2)),
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          _buildHeaderCell('م', 0.1),
+                          _buildHeaderCell('المبلغ', 0.25),
+                          _buildHeaderCell('التاريخ', 0.32),
+                          _buildHeaderCell('حذف', 0.2),
+                        ],
+                      ),
+                    ),
+                    SizedBox(height: 0.01.sh),
+
+                    // --- Payments List ---
+                    BlocBuilder<StudentSubscriptionCubit,
+                        StudentSubscriptionState>(
+                      builder: (context, state) {
+                        if (state is StudentSubscriptionLoading) {
+                          return const Center(
+                              child: CircularProgressIndicator());
+                        }
+                        if (state is StudentSubscriptionError) {
+                          return ErrorStateWidget(
+                            text: state.error,
+                            reloadFunction: () {
+                              _studentSubscriptionCubit
+                                  .getStudentSubscriptionsById();
+                            },
+                          );
+                        }
+                        if (state is StudentSubscriptionEmpty) {
+                          return EmptyStateWidget(
+                            text: 'لا توجد مدفوعات للطالب',
+                            addButtonText: 'إضافة دفعة',
+                            onPressed: () {
+                              AppSettings.APP_Working ==
+                                      StudentSubscriptionStatus.yearly
+                                  ? StudentDialogs
+                                      .showAddNewSubscriptionDialogYearly(
+                                      context: context,
+                                      studentSubscriptionCubit:
+                                          _studentSubscriptionCubit,
+                                    )
+                                  : StudentDialogs
+                                      .showAddNewSubscriptionDialogYearlyMonthly(
+                                          context: context,
+                                          studentSubscriptionCubit:
+                                              _studentSubscriptionCubit);
+                            },
+                          );
+                        }
+                        return _paymentList();
+                      },
+                    ),
+                  ],
+                )
 
               // --- Payments Title ---
-              Text(
-                "المدفوعات",
-                style: TextManagement.alexandria18RegularBlack.copyWith(
-                  color: ColorManagement.mainBlue,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              SizedBox(height: 0.02.sh),
-
-              // --- Payments List Header ---
-              Container(
-                padding: EdgeInsets.symmetric(vertical: 0.01.sh),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(12.r),
-                  border: Border.all(
-                      color: ColorManagement.mainBlue.withOpacity(0.2)),
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    _buildHeaderCell('م', 0.1),
-                    _buildHeaderCell('المبلغ', 0.25),
-                    _buildHeaderCell('التاريخ', 0.32),
-                    _buildHeaderCell('حذف', 0.2),
-                  ],
-                ),
-              ),
-              SizedBox(height: 0.01.sh),
-
-              // --- Payments List ---
-              BlocBuilder<StudentSubscriptionCubit, StudentSubscriptionState>(
-                builder: (context, state) {
-                  if (state is StudentSubscriptionLoading) {
-                    return const Center(child: CircularProgressIndicator());
-                  }
-                  if (state is StudentSubscriptionError) {
-                    return ErrorStateWidget(
-                      text: state.error,
-                      reloadFunction: () {
-                        _studentSubscriptionCubit.getStudentSubscriptionsById();
-                      },
-                    );
-                  }
-                  if (state is StudentSubscriptionEmpty) {
-                    return EmptyStateWidget(
-                      text: 'لا توجد مدفوعات للطالب',
-                      addButtonText: 'إضافة دفعة',
-                      onPressed: () {
-                        StudentDialogs.showAddAbsenceDiscountDialog(
-                          context: context,
-                          studentSubscriptionCubit: _studentSubscriptionCubit,
-                        );
-                      },
-                    );
-                  }
-                  return _paymentList();
-                },
-              ),
             ],
           ),
         ),

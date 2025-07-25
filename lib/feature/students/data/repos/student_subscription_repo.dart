@@ -28,6 +28,18 @@ class StudentSubscriptionRepo {
     }
   }
 
+  Future<Result<List<Subscription>>> getStudentSubscriptionsByIdAndMonth(
+      int studentId, String month) async {
+    try {
+      List<Map> subscriptionList =
+          await _db.getStudentSubscriptionsByIdAndMonth(studentId, month);
+      return Success(
+          subscriptionList.map((json) => Subscription.fromJson(json)).toList());
+    } catch (e) {
+      return Failure(e.toString());
+    }
+  }
+
   Future<Result<List<Subscription>>> getAllStudentSubscriptions() async {
     try {
       List<Map> subscriptionList = await _db.getAllStudentSubscriptions();

@@ -1,3 +1,5 @@
+import 'package:tasneem_sba7ie/core/helper/net_salary_calculator.dart';
+
 class Teacher {
   int? id;
   String? name;
@@ -43,10 +45,7 @@ class Teacher {
   }
 
   int calculateNetSalary() {
-    final double daySalary = (salary! / 25);
-    final double netSalary =
-        (salary ?? 0) - ((daysAbsent ?? 0) * daySalary) - (discounts ?? 0);
-
-    return netSalary.toInt();
+    return NetSalaryCalculator.calculateNetSalary(
+        salary ?? 0, daysAbsent, discounts);
   }
 }

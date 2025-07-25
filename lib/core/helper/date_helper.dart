@@ -6,9 +6,8 @@ class DateHelper {
     return DateFormat('MM-yyyy', 'en').format(now);
   }
 
-  static String getFormattedCurrentDate(String month) {
-    final DateTime date = DateFormat("MM-yyyy").parse(month);
-    return DateFormat('MM-yyyy', 'en').format(date);
+  static String getFormattedCurrentDate(DateTime month) {
+    return DateFormat('MM-yyyy', 'en').format(month);
   }
 
   static String getFormattedCurrentDateDay(String currentDate) {

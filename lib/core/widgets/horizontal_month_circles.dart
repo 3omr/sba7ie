@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 import 'package:tasneem_sba7ie/core/helper/date_helper.dart';
 import 'package:tasneem_sba7ie/core/theme/color_management.dart';
 import 'package:tasneem_sba7ie/core/theme/text_management.dart';
-import 'package:tasneem_sba7ie/feature/teachers/logic/teacher_management_cubit/teacher_management_cubit.dart';
 
 class HorizontalMonthCircles extends StatefulWidget {
-  const HorizontalMonthCircles({super.key});
+  final cubit;
+  const HorizontalMonthCircles({super.key, required this.cubit});
 
   @override
   State<HorizontalMonthCircles> createState() => _HorizontalMonthCirclesState();
@@ -20,9 +19,8 @@ class _HorizontalMonthCirclesState extends State<HorizontalMonthCircles> {
   @override
   void initState() {
     super.initState();
-    _selectedMonthIndex = DateHelper.convertCurrentMonthToInt(
-            context.read<TeacherManagementCubit>().currentMonth) -
-        1;
+    _selectedMonthIndex =
+        DateHelper.convertCurrentMonthToInt(widget.cubit.currentMonth) - 1;
   }
 
   @override
@@ -58,7 +56,7 @@ class _HorizontalMonthCirclesState extends State<HorizontalMonthCircles> {
                   month = DateFormat("MM-yyyy")
                       .format(DateFormat("MM-yyyy").parse(month))
                       .toString();
-                  context.read<TeacherManagementCubit>().changeMonth(month);
+                  widget.cubit.changeMonth(month);
                 });
               },
               child: AnimatedContainer(

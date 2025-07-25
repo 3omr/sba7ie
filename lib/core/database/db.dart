@@ -130,6 +130,18 @@ class Db {
     return res;
   }
 
+  Future<List<Map>> getStudentSubscriptionsByIdAndMonth(
+      int studentId, String month) async {
+    Database? data = await db;
+    List<Map<String, Object?>> res = await data!.query(
+      'subscriptions',
+      where: 'idStudent = ? AND date = ?',
+      whereArgs: [studentId, month],
+      orderBy: 'date DESC',
+    );
+    return res;
+  }
+
   Future<List<Map>> getAllStudentSubscriptions() async {
     Database? data = await db;
     List<Map<String, Object?>> res = await data!.query(

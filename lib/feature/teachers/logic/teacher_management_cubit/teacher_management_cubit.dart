@@ -1,4 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 import 'package:tasneem_sba7ie/core/helper/date_helper.dart';
 import 'package:tasneem_sba7ie/feature/teachers/data/models/teacher_model.dart';
 import 'package:tasneem_sba7ie/feature/teachers/data/repos/teacher_management_repo.dart';
@@ -9,16 +10,28 @@ class TeacherManagementCubit extends Cubit<TeacherManagementState> {
 
   final TeacherManagementRepo _teacherRepo;
 
+  // Month selection and info
+
   String _currentMonth = DateHelper.getCurrentMonthAndYear();
-  late Teacher _teacher;
 
   String get currentMonth => _currentMonth;
+
+  Future<void> changeMonth(String month) async {
+    _currentMonth = month;
+    await getTeacherAbsenceAndDiscounts(_teacher.id!,
+        DateHelper.getFormattedCurrentDate(DateFormat("MM-yyyy").parse(month)));
+
+    emit(TeacherDetailsInitial());
+  }
+
+  late Teacher _teacher;
+
   Teacher get teacher => _teacher;
 
   // Sets the teacher and fetches their absence and late days for the current month
   void setTeacher(Teacher teacher) {
     _teacher = teacher;
-    getTeacherAbsenceAnddiscounts(_teacher.id!, _currentMonth);
+    getTeacherAbsenceAndDiscounts(_teacher.id!, _currentMonth);
     emit(TeacherDetailsInitial());
   }
 
@@ -32,22 +45,14 @@ class TeacherManagementCubit extends Cubit<TeacherManagementState> {
         month ?? _currentMonth, _teacher.daysAbsent!, _teacher.discounts!);
     resp.when(
       success: (success) {
-        getTeacherAbsenceAnddiscounts(_teacher.id!, _currentMonth);
+        getTeacherAbsenceAndDiscounts(_teacher.id!, _currentMonth);
         emit(TeacherDetailsLoaded(teacher));
       },
       failure: (e) => emit(TeacherDetailsError(e.toString())),
     );
   }
 
-  Future<void> changeMonth(String month) async {
-    _currentMonth = month;
-    await getTeacherAbsenceAnddiscounts(
-        _teacher.id!, DateHelper.getFormattedCurrentDate(month));
-
-    emit(TeacherDetailsInitial());
-  }
-
-  Future<void> getTeacherAbsenceAnddiscounts(
+  Future<void> getTeacherAbsenceAndDiscounts(
       int teacherId, String month) async {
     emit(TeacherDetailsLoading());
     var resp =

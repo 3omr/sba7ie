@@ -129,7 +129,7 @@ class _TeacherDetailsState extends State<TeacherDetails> {
                       style: TextManagement.alexandria16BoldMainBlue,
                       semanticsLabel: 'قسم اختيار الشهر',
                     ),
-                    const HorizontalMonthCircles(),
+                     HorizontalMonthCircles(cubit: teacherManagementCubit),
                   ],
                 ),
               ),
